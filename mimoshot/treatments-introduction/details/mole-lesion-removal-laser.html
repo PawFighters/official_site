@@ -503,5 +503,31 @@
   </div>
 
 </div>
+<script>
+(() => {
+  const cta = document.querySelector(".cta");
+  if (!cta) return;
+
+  const getTreatmentName = () => {
+    const titleMatch = document.title.match(/\uC2DC\uC220\uC18C\uAC1C\s*(?:\u2014|-)\s*(.*?)\s*\|\s*\uBBF8\uBAA8\uC0F7/);
+    if (titleMatch && titleMatch[1]) return titleMatch[1].trim();
+
+    const heading = document.querySelector(".hero h1");
+    if (heading && heading.textContent.trim()) return heading.textContent.trim();
+
+    return cta.textContent.replace(/\s*\uCD5C\uC800\uAC00 \uAC80\uC0C9\s*$/, "").trim();
+  };
+
+  cta.addEventListener("click", () => {
+    const treatmentName = getTreatmentName();
+    if (!treatmentName || !window.MimoshotApp || typeof window.MimoshotApp.postMessage !== "function") return;
+
+    window.MimoshotApp.postMessage(JSON.stringify({
+      type: "openPriceSearch",
+      treatmentName
+    }));
+  });
+})();
+</script>
 </body>
 </html>
