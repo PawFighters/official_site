@@ -3,8 +3,15 @@
    ============================================================= */
 
 /* Body face: Pretendard is the de-facto Korean product UI font.
-   Loaded from CDN; falls back to Apple SD / Noto Sans KR / system. */
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
+   Loaded directly so pages can preload it before this stylesheet applies. */
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: optional;
+  src: local("Pretendard Variable"),
+       url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2/PretendardVariable.woff2") format("woff2-variations");
+}
 
 :root {
   /* ============================================================
