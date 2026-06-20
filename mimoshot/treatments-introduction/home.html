@@ -425,7 +425,7 @@
   <!-- ③ 나에게 맞는 시술 찾기 -->
   <section class="block">
     <h2>나에게 맞는 시술 찾기</h2>
-    <a class="finder-cta" href="시술소개 - 나에게 맞는 시술 찾기.html">
+    <a class="finder-cta" href="find-my-treatment.html">
       <span class="ic">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6B21D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"></path><path d="M21 21l-4.3-4.3"></path></svg>
       </span>
@@ -463,7 +463,7 @@
 <script>
 /* ============================================================
    데이터 — 시술이 추가되면 이 배열에만 항목을 더하면 됩니다.
-   href는 "시술소개 - {시술명}.html" 규칙을 따릅니다.
+  href는 "details/{treatment-slug}.html" 규칙을 따릅니다.
    ============================================================ */
 /* ============================================================
    모델 사진 — 하나의 "이미지 풀". images/ 폴더에 넣고 파일명을 적으면 됩니다.
@@ -634,7 +634,7 @@ function renderToday() {
   setPhoto(panel.querySelector(".photo"), 1);
 }
 
-/* ③ 나에게 맞는 시술 찾기 — 전용 페이지(시술소개 - 나에게 맞는 시술 찾기.html)로
+/* ③ 나에게 맞는 시술 찾기 — 전용 페이지(find-my-treatment.html)로
    분리했어요. 홈에서는 진입 카드 링크만 두고, 퀴즈 로직은 그 페이지에 있어요. */
 
 /* ============================================================
