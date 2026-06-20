@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>나에게 맞는 시술 찾기 | 미모샷</title>
+<link rel="stylesheet" href="colors_and_type.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--neutral-100);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  .screen {
+    max-width: 420px;
+    margin: 0 auto;
+    background: var(--bg-app);
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 0 1px var(--neutral-200);
+  }
+  ul, ol { margin: 0; padding: 0; list-style: none; }
+  button { font-family: var(--font-sans); }
+
+  /* App bar */
+  .appbar {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--bg-app);
+    border-bottom: 1px solid var(--divider);
+    display: grid; grid-template-columns: 40px 1fr 40px; align-items: center;
+    height: 52px;
+  }
+  .appbar .back {
+    border: 0; background: transparent; cursor: pointer;
+    height: 52px; display: flex; align-items: center; justify-content: center;
+  }
+  .appbar .bar-title { text-align: center; font: 600 16px/1 var(--font-sans); color: var(--fg-1); }
+
+  /* Progress */
+  .progress-wrap { padding: 16px 20px 0; }
+  .progress-track { height: 6px; background: var(--neutral-100); border-radius: var(--r-pill); overflow: hidden; }
+  .progress-fill { height: 100%; width: 0; background: var(--accent); border-radius: var(--r-pill); transition: width var(--dur-base) var(--ease-out); }
+  .progress-label { margin: 8px 2px 0; font: 700 11px/1 var(--font-sans); color: var(--fg-4); letter-spacing: .02em; font-variant-numeric: tabular-nums; }
+
+  /* Question */
+  .stage { padding: 20px; flex: 1; }
+  .q-kicker { font: 700 11px/1 var(--font-sans); color: var(--accent); letter-spacing: .04em; }
+  .q-title { margin: 10px 0 4px; font: 700 21px/1.4 var(--font-sans); color: var(--fg-1); text-wrap: pretty; }
+  .q-sub { margin: 0 0 18px; font: 400 13.5px/1.6 var(--font-sans); color: var(--fg-3); text-wrap: pretty; }
+
+  .options { display: flex; flex-direction: column; gap: 9px; }
+  .opt {
+    border: 1px solid var(--border-subtle); cursor: pointer; text-align: left;
+    background: var(--bg-surface); color: var(--fg-1);
+    padding: 16px; border-radius: var(--r-lg, 14px);
+    box-shadow: var(--shadow-xs);
+    transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  .opt:active { transform: scale(.99); background: var(--accent-soft); }
+  .opt.sel { border-color: var(--accent); background: var(--accent-soft); }
+  .opt .lab { font: 600 15.5px/1.4 var(--font-sans); }
+  .opt .hint { font: 400 12.5px/1.45 var(--font-sans); color: var(--fg-3); }
+
+  /* chips grid (group/concern) */
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+  .grid .opt { align-items: flex-start; min-height: 64px; justify-content: center; }
+  .grid .opt .lab { font-size: 14.5px; }
+
+  .nav { margin-top: 18px; display: flex; }
+  .ghost-btn {
+    border: 0; background: transparent; cursor: pointer; color: var(--fg-3);
+    font: 700 13px/1 var(--font-sans); padding: 12px 4px; min-height: 40px;
+  }
+
+  /* Result */
+  .result-head { padding: 22px 20px 6px; }
+  .result-head h2 { margin: 0; font: 700 20px/1.4 var(--font-sans); color: var(--fg-1); text-wrap: pretty; }
+  .pick-summary { margin: 12px 0 2px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .pick-summary .pchip {
+    background: var(--violet-50); color: var(--violet-700);
+    font: 700 11.5px/1 var(--font-sans); padding: 7px 10px; border-radius: var(--r-pill);
+  }
+  .result-note { margin: 14px 0 0; font: 400 12px/1.6 var(--font-sans); color: var(--fg-4); text-wrap: pretty; }
+
+  .res-list { display: flex; flex-direction: column; gap: 11px; padding: 14px 20px 4px; }
+  .res-card {
+    display: block; text-decoration: none; position: relative;
+    background: var(--bg-surface); border: 1px solid var(--border-subtle);
+    border-radius: 16px; padding: 16px; box-shadow: var(--shadow-xs);
+    transition: background var(--dur-fast) var(--ease-out);
+  }
+  .res-card:active { background: var(--neutral-100); }
+  .res-card.top { border-color: var(--accent); }
+  .res-rank {
+    position: absolute; top: -9px; left: 14px;
+    background: var(--accent); color: var(--on-accent);
+    font: 800 10px/1 var(--font-sans); letter-spacing: .03em;
+    padding: 5px 9px; border-radius: var(--r-pill);
+  }
+  .res-top { display: flex; align-items: center; gap: 8px; margin-bottom: 2px; }
+  .res-name { font: 700 17px/1.3 var(--font-sans); color: var(--fg-1); }
+  .res-cat {
+    background: var(--accent-soft); color: var(--accent-press);
+    font: 700 10px/1 var(--font-sans); padding: 4px 6px; border-radius: 5px;
+  }
+  .res-desc { margin: 6px 0 0; font: 400 13px/1.55 var(--font-sans); color: var(--fg-3); text-wrap: pretty; }
+  .res-reasons { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .res-reasons .r {
+    background: var(--neutral-100); color: var(--fg-2);
+    font: 700 11px/1 var(--font-sans); padding: 6px 8px; border-radius: var(--r-pill);
+  }
+  .res-reasons .r.match { background: var(--accent); color: var(--on-accent); }
+  .res-go { margin-top: 12px; display: flex; align-items: center; gap: 4px; color: var(--accent-press); font: 700 12.5px/1 var(--font-sans); }
+
+  .restart-wrap { padding: 16px 20px 8px; }
+  .restart {
+    width: 100%; border: 1px solid var(--border-subtle); cursor: pointer;
+    background: var(--bg-surface); color: var(--fg-1);
+    font: 700 14px/1 var(--font-sans); padding: 15px; border-radius: 12px; min-height: 50px;
+    box-shadow: var(--shadow-xs);
+  }
+  .restart:active { background: var(--neutral-100); }
+
+  .disclaimer { padding: 8px 20px 32px; font: 400 12px/1.6 var(--font-sans); color: var(--fg-4); text-wrap: pretty; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="screen" data-screen-label="시술소개 - 나에게 맞는 시술 찾기">
+
+  <header class="appbar">
+    <button class="back" id="backBtn" aria-label="뒤로">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2B2733" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg>
+    </button>
+    <div class="bar-title">나에게 맞는 시술 찾기</div>
+    <span></span>
+  </header>
+
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel"></div>
+  </div>
+
+  <main class="stage" id="stage"></main>
+
+</div>
+
+<script src="treatments.js"></script>
+<script>
+/* ============================================================
+   나에게 맞는 시술 찾기 — 적응형 다축 매칭
+   1) 고민 범주 → 2) 세부 고민으로 후보군 확정
+   3) 후보군이 '실제로 갈리는' 항목만 골라 질문(적응형)
+   4) 다축 가중 채점 → 상위 추천 + 매칭 근거 표시
+   ============================================================ */
+const CHEV = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B21D9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>';
+const stage = document.getElementById("stage");
+const fill = document.getElementById("progressFill");
+const plabel = document.getElementById("progressLabel");
+const backBtn = document.getElementById("backBtn");
+const concernLabel = (id) => (CONCERNS.find((c) => c.id === id) || {}).label || id;
+
+/* 후보군 = 선택한 세부 고민을 '대표 고민'으로 가진 시술 */
+function poolFor(concern) { return TREATMENTS.filter((t) => t.c.includes(concern)); }
+
+/* 적응형 질문 정의: 후보군에서 값이 갈릴 때만 노출 */
+const REFINE = [
+  {
+    key: "downtime",
+    applicable: (p) => new Set(p.map((t) => t.dt)).size > 1,
+    kicker: "회복", title: "시술 후 회복 기간(다운타임)은 어느 정도 괜찮으세요?",
+    sub: "붓기·멍·자국으로 일상이 불편한 기간이에요.",
+    options: [
+      { v: "none", lab: "거의 없어야 해요", hint: "바로 일상으로 돌아가고 싶어요" },
+      { v: "some", lab: "며칠은 괜찮아요", hint: "2~3일 정도는 감수할 수 있어요" },
+      { v: "any", lab: "상관없어요", hint: "회복 기간은 따지지 않을게요" },
+    ],
+  },
+  {
+    key: "pain",
+    applicable: (p) => Math.max(...p.map((t) => t.pain)) - Math.min(...p.map((t) => t.pain)) >= 2,
+    kicker: "통증", title: "바늘·주사로 인한 통증은 어떠세요?",
+    sub: "도포·에너지 시술은 통증이 적고, 주사·미세침은 더 느낄 수 있어요.",
+    options: [
+      { v: "low", lab: "최대한 적었으면 해요", hint: "바늘이 부담스러워요" },
+      { v: "ok", lab: "괜찮아요", hint: "효과가 좋다면 감수할 수 있어요" },
+      { v: "any", lab: "상관없어요", hint: "통증은 따지지 않을게요" },
+    ],
+  },
+  {
+    key: "onset",
+    applicable: (p) => new Set(p.map((t) => t.onset)).size > 1,
+    kicker: "효과 속도", title: "효과는 어떤 쪽이 더 좋으세요?",
+    sub: "필러처럼 바로 보이는 변화와, 부스터처럼 서서히 자연스러운 변화가 있어요.",
+    options: [
+      { v: "immediate", lab: "바로 보였으면 해요", hint: "즉각적인 변화를 원해요" },
+      { v: "gradual", lab: "서서히 자연스럽게", hint: "티 안 나게 개선되면 좋아요" },
+      { v: "any", lab: "상관없어요", hint: "속도는 따지지 않을게요" },
+    ],
+  },
+  {
+    key: "sessions",
+    applicable: (p) => new Set(p.map((t) => !!t.multi)).size > 1,
+    kicker: "시술 횟수", title: "시술 횟수는 어떤 쪽이 좋으세요?",
+    sub: "한 번으로 끝나는 시술과, 여러 번 나눠 받는 시술이 있어요.",
+    options: [
+      { v: "one", lab: "한 번에 끝났으면 해요", hint: "자주 방문하긴 어려워요" },
+      { v: "multi", lab: "여러 번 나눠도 괜찮아요", hint: "꾸준히 관리할 수 있어요" },
+      { v: "any", lab: "상관없어요", hint: "횟수는 따지지 않을게요" },
+    ],
+  },
+];
+
+/* ---- 상태 ---- */
+let answers = {};
+let flow = [];   // 화면 시퀀스: 'group','concern', (refine keys...), 'result'
+let pos = 0;
+
+function rebuildFlow() {
+  flow = ["group", "concern"];
+  if (answers.concern) {
+    const pool = poolFor(answers.concern);
+    if (pool.length > 2) {
+      REFINE.forEach((r) => { if (r.applicable(pool)) flow.push(r.key); });
+    }
+    flow.push("result");
+  }
+}
+
+function setProgress() {
+  const total = flow.length;           // result 포함
+  const cur = Math.min(pos + 1, total);
+  const isResult = flow[pos] === "result";
+  fill.style.width = (isResult ? 100 : Math.round((pos / Math.max(total - 1, 1)) * 100)) + "%";
+  plabel.textContent = isResult ? "추천 결과" : `질문 ${cur} / ${total - 1}`;
+  document.getElementById("progressWrap").style.display = "block";
+}
+
+function go(delta) { pos = Math.max(0, Math.min(flow.length - 1, pos + delta)); render(); }
+
+/* ---- 채점 ---- */
+function score(t) {
+  let s = 0;
+  if (answers.downtime === "none") s += t.dt === "none" ? 25 : -30;
+  else if (answers.downtime === "some") s += t.dt === "some" ? 15 : 10;
+
+  if (answers.pain === "low") s += [25, 12, -12, -25][t.pain] ?? 0;
+  else if (answers.pain === "ok") s += t.pain >= 2 ? 10 : 3;
+
+  if (answers.onset === "immediate") s += t.onset === "immediate" ? 25 : -12;
+  else if (answers.onset === "gradual") s += t.onset === "gradual" ? 15 : -12;
+
+  if (answers.sessions === "one") s += t.multi ? -12 : 18;
+  else if (answers.sessions === "multi") s += t.multi ? 15 : -6;
+  return s;
+}
+function reasonsFor(t) {
+  const r = [];
+  if (answers.downtime === "none" && t.dt === "none") r.push("회복 빠름");
+  if (answers.pain === "low" && t.pain <= 1) r.push("통증 적음");
+  if (answers.onset === "immediate" && t.onset === "immediate") r.push("즉각 효과");
+  if (answers.onset === "gradual" && t.onset === "gradual") r.push("자연스럽게");
+  if (answers.sessions === "one" && !t.multi) r.push("한 번 시술");
+  if (answers.sessions === "multi" && t.multi) r.push("꾸준히 관리");
+  return r;
+}
+
+/* ---- 렌더 ---- */
+function render() {
+  setProgress();
+  backBtn.style.visibility = pos === 0 ? "hidden" : "visible";
+  const screen = flow[pos];
+  if (screen === "group") return renderGroup();
+  if (screen === "concern") return renderConcern();
+  if (screen === "result") return renderResult();
+  return renderRefine(REFINE.find((r) => r.key === screen));
+}
+
+function optionButton({ lab, hint, selected, onClick, grid }) {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.className = "opt" + (selected ? " sel" : "");
+  b.innerHTML = `<span class="lab"></span>${hint ? '<span class="hint"></span>' : ""}`;
+  b.querySelector(".lab").textContent = lab;
+  if (hint) b.querySelector(".hint").textContent = hint;
+  b.addEventListener("click", onClick);
+  return b;
+}
+
+function questionHead(kicker, title, sub) {
+  return `<div class="q-kicker">${kicker}</div><h1 class="q-title"></h1>${sub ? '<p class="q-sub"></p>' : ""}`;
+}
+
+function renderGroup() {
+  stage.innerHTML = questionHead("STEP 1 · 고민 범주", "x", "x") +
+    '<div class="grid" id="opts"></div>';
+  stage.querySelector(".q-title").textContent = "가장 신경 쓰이는 고민은 어떤 쪽인가요?";
+  stage.querySelector(".q-sub").textContent = "큰 범주를 먼저 고르면, 다음 단계에서 더 좁혀가요.";
+  const opts = stage.querySelector("#opts");
+  CONCERN_GROUPS.forEach((g) => {
+    opts.appendChild(optionButton({
+      lab: g.label, selected: answers.group === g.label, grid: true,
+      onClick: () => {
+        if (answers.group !== g.label) { answers.group = g.label; answers.concern = null; }
+        rebuildFlow(); go(1);
+      },
+    }));
+  });
+}
+
+function renderConcern() {
+  const group = CONCERN_GROUPS.find((g) => g.label === answers.group);
+  const list = (group ? group.concerns : [])
+    .filter((id) => TREATMENTS.some((t) => t.c.includes(id)));
+  stage.innerHTML = questionHead("STEP 2 · 세부 고민", "x", "x") +
+    '<div class="grid" id="opts"></div>' +
+    '<div class="nav"><button class="ghost-btn" id="prev">← 이전</button></div>';
+  stage.querySelector(".q-title").textContent = `'${answers.group}' 중에서 골라주세요`;
+  stage.querySelector(".q-sub").textContent = "가장 가까운 하나를 선택하면 후보 시술이 추려져요.";
+  const opts = stage.querySelector("#opts");
+  list.forEach((id) => {
+    const n = poolFor(id).length;
+    opts.appendChild(optionButton({
+      lab: concernLabel(id), hint: `${n}개 시술`, selected: answers.concern === id, grid: true,
+      onClick: () => { answers.concern = id; rebuildFlow(); go(1); },
+    }));
+  });
+  stage.querySelector("#prev").addEventListener("click", () => go(-1));
+}
+
+function renderRefine(def) {
+  stage.innerHTML = questionHead(`STEP · ${def.kicker}`, "x", "x") +
+    '<div class="options" id="opts"></div>' +
+    '<div class="nav"><button class="ghost-btn" id="prev">← 이전</button></div>';
+  stage.querySelector(".q-title").textContent = def.title;
+  stage.querySelector(".q-sub").textContent = def.sub;
+  const opts = stage.querySelector("#opts");
+  def.options.forEach((o) => {
+    opts.appendChild(optionButton({
+      lab: o.lab, hint: o.hint, selected: answers[def.key] === o.v,
+      onClick: () => { answers[def.key] = o.v; go(1); },
+    }));
+  });
+  stage.querySelector("#prev").addEventListener("click", () => go(-1));
+}
+
+function renderResult() {
+  document.getElementById("progressWrap").style.display = "block";
+  const pool = poolFor(answers.concern).slice();
+  const ranked = pool
+    .map((t, i) => ({ t, s: score(t), i }))
+    .sort((a, b) => (b.s - a.s) || (a.t.pain - b.t.pain) || (a.i - b.i))
+    .slice(0, Math.min(5, pool.length));
+
+  // 선택 요약 칩
+  const picks = [concernLabel(answers.concern)];
+  const sumMap = {
+    downtime: { none: "회복 빠른", some: "며칠 회복 OK" },
+    pain: { low: "통증 적은", ok: "통증 감수" },
+    onset: { immediate: "즉각 효과", gradual: "자연스러운" },
+    sessions: { one: "한 번 시술", multi: "꾸준히 관리" },
+  };
+  Object.keys(sumMap).forEach((k) => { if (answers[k] && sumMap[k][answers[k]]) picks.push(sumMap[k][answers[k]]); });
+
+  stage.innerHTML = "";
+  const head = document.createElement("div");
+  head.className = "result-head";
+  head.innerHTML = '<h2></h2><div class="pick-summary" id="picks"></div>' +
+    '<p class="result-note">고른 조건에 가까운 순서로 추천한 결과예요. 효과·적합 여부는 개인에 따라 다르니, 자세한 내용은 각 시술 페이지와 의료진 상담으로 확인하세요.</p>';
+  head.querySelector("h2").textContent = `'${concernLabel(answers.concern)}' 고민에 이런 시술이 잘 맞아요`;
+  const picksEl = head.querySelector("#picks");
+  picks.forEach((p) => { const s = document.createElement("span"); s.className = "pchip"; s.textContent = p; picksEl.appendChild(s); });
+  stage.appendChild(head);
+
+  const listEl = document.createElement("div");
+  listEl.className = "res-list";
+  ranked.forEach((r, idx) => {
+    const t = r.t;
+    const a = document.createElement("a");
+    a.className = "res-card" + (idx === 0 ? " top" : "");
+    a.href = t.href;
+    const reasons = reasonsFor(t);
+    a.innerHTML =
+      (idx === 0 ? '<span class="res-rank">가장 잘 맞아요</span>' : "") +
+      '<div class="res-top"><span class="res-name"></span><span class="res-cat"></span></div>' +
+      '<p class="res-desc"></p>' +
+      '<div class="res-reasons"></div>' +
+      `<div class="res-go">자세히 보기 ${CHEV}</div>`;
+    a.querySelector(".res-name").textContent = t.n;
+    a.querySelector(".res-cat").textContent = t.cat;
+    a.querySelector(".res-desc").textContent = t.d;
+    const rs = a.querySelector(".res-reasons");
+    reasons.forEach((txt) => { const c = document.createElement("span"); c.className = "r match"; c.textContent = txt; rs.appendChild(c); });
+    // 보조 정보 칩(중립): 다운타임/방식
+    const info = [];
+    info.push(t.dt === "none" ? "다운타임 거의 없음" : "다운타임 며칠");
+    if (t.multi) info.push("여러 회 권장"); else info.push("1회 기준");
+    info.forEach((txt) => { const c = document.createElement("span"); c.className = "r"; c.textContent = txt; rs.appendChild(c); });
+    listEl.appendChild(a);
+  });
+  stage.appendChild(listEl);
+
+  const rw = document.createElement("div");
+  rw.className = "restart-wrap";
+  rw.innerHTML = '<button class="restart" id="restart">처음부터 다시 찾기</button>';
+  rw.querySelector("#restart").addEventListener("click", () => { answers = {}; rebuildFlow(); pos = 0; render(); });
+  stage.appendChild(rw);
+
+  const dc = document.createElement("p");
+  dc.className = "disclaimer";
+  dc.textContent = "본 추천은 일반적인 시술 안내를 돕기 위한 참고용이며, 진단이나 의학적 권유가 아닙니다. 시술 여부는 반드시 의료진과의 상담을 통해 결정하시기 바랍니다.";
+  stage.appendChild(dc);
+}
+
+backBtn.addEventListener("click", () => { if (pos > 0) go(-1); else history.back(); });
+
+/* init */
+rebuildFlow();
+render();
+</script>
+</body>
+</html>

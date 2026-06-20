@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시술소개 — 바이리즌 | 미모샷</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--neutral-100);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  .screen {
+    max-width: 420px;
+    margin: 0 auto;
+    background: var(--bg-app);
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 0 1px var(--neutral-200);
+  }
+
+  /* ── App bar ─────────────────────────────── */
+  .appbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--bg-app);
+    border-bottom: 1px solid var(--divider);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 52px;
+  }
+  .appbar .back {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: 0;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+  }
+  .appbar .bar-title {
+    font: 600 16px/1 var(--font-sans);
+    color: var(--fg-1);
+  }
+
+  /* ── Hero ────────────────────────────────── */
+  .hero {
+    padding: 24px 20px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .chip {
+    align-self: flex-start;
+    background: var(--accent-soft);
+    color: var(--accent-press);
+    font: 700 11px/1 var(--font-sans);
+    padding: 6px 9px;
+    border-radius: 6px;
+    letter-spacing: 0.01em;
+  }
+  .hero h1 {
+    margin: 14px 0 0;
+    font: 700 28px/1.25 var(--font-sans);
+    color: var(--fg-1);
+    text-wrap: pretty;
+  }
+  .hero .en {
+    margin-top: 6px;
+    font: 500 13px/1.4 var(--font-sans);
+    color: var(--fg-3);
+  }
+  .hero .lead {
+    margin: 16px 0 0;
+    font: 500 17px/1.6 var(--font-sans);
+    color: var(--fg-2);
+    text-wrap: pretty;
+  }
+  .hero .lead strong { color: var(--accent); font-weight: 700; }
+  .hero .note {
+    margin: 16px 0 0;
+    background: var(--neutral-50);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font: 400 13px/1.6 var(--font-sans);
+    color: var(--fg-3);
+    text-wrap: pretty;
+  }
+  .hero .note strong { color: var(--fg-2); font-weight: 600; }
+
+  /* ── Section scaffolding ─────────────────── */
+  .band { height: 8px; background: var(--neutral-100); flex-shrink: 0; }
+  section.block { padding: 28px 20px; }
+  section.block > h2 {
+    margin: 0 0 16px;
+    font: var(--t-h3);
+    color: var(--fg-1);
+  }
+  section.block p {
+    margin: 0;
+    font: var(--t-body);
+    color: var(--fg-2);
+    text-wrap: pretty;
+  }
+  section.block p strong { color: var(--fg-1); font-weight: 600; }
+  section.block p + p { margin-top: 12px; }
+
+  /* ── ② Checklist ─────────────────────────── */
+  .checklist { display: flex; flex-direction: column; gap: 12px; }
+  .checklist li { display: flex; align-items: center; gap: 12px; }
+  .checklist .tick {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .checklist .txt { font: 500 15px/1.5 var(--font-sans); color: var(--fg-2); }
+  ul, ol { margin: 0; padding: 0; list-style: none; }
+
+  /* ── ④ Effect tiles ──────────────────────── */
+  .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tiles li {
+    background: var(--violet-50);
+    border-radius: 12px;
+    padding: 16px 14px;
+    font: 600 14px/1.45 var(--font-sans);
+    color: var(--violet-800);
+    text-wrap: pretty;
+  }
+  .tiles li:nth-child(odd):last-child { grid-column: 1 / -1; }
+  .tiles .tail { color: var(--violet-700); font-weight: 400; }
+
+  /* ── ⑤ Key-value card ────────────────────── */
+  .kv {
+    background: var(--neutral-50);
+    border-radius: 16px;
+    padding: 4px 18px;
+  }
+  .kv .row {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+  }
+  .kv .row + .row { border-top: 1px solid var(--divider); }
+  .kv .k {
+    flex: 0 0 84px;
+    font: 600 13px/1.55 var(--font-sans);
+    color: var(--fg-3);
+    padding-top: 1px;
+  }
+  .kv .v {
+    flex: 1;
+    font: 500 14px/1.55 var(--font-sans);
+    color: var(--fg-1);
+    font-variant-numeric: tabular-nums;
+    text-wrap: pretty;
+  }
+
+  /* ── ⑥ Price-factor panel ────────────────── */
+  .price-panel {
+    background: var(--violet-50);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .price-panel .intro {
+    font: var(--t-body);
+    color: var(--fg-2);
+    margin: 0 0 4px;
+    text-wrap: pretty;
+  }
+  .factor {
+    background: var(--bg-surface);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .factor .name { font: 700 14px/1.4 var(--font-sans); color: var(--fg-1); }
+  .factor .desc { font: 400 13.5px/1.5 var(--font-sans); color: var(--fg-2); }
+  .compare-tip {
+    margin-top: 4px;
+    background: var(--accent);
+    color: var(--on-accent);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font: 600 14px/1.5 var(--font-sans);
+    text-wrap: pretty;
+  }
+
+  /* ── ⑦ Steps ─────────────────────────────── */
+  .steps { display: flex; flex-direction: column; }
+  .steps li { display: flex; gap: 14px; position: relative; padding-bottom: 20px; }
+  .steps li:last-child { padding-bottom: 0; }
+  .steps .num {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--on-accent);
+    font: 700 13px/1 var(--font-sans);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .steps li:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: 12px;
+    top: 26px;
+    bottom: 0;
+    width: 2px;
+    background: var(--violet-100);
+  }
+  .steps .txt {
+    font: 500 15px/1.5 var(--font-sans);
+    color: var(--fg-2);
+    padding-top: 3px;
+    text-wrap: pretty;
+  }
+
+  /* ── ⑧ Cautions ──────────────────────────── */
+  .cautions {
+    background: var(--neutral-50);
+    border-radius: 16px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .cautions li {
+    display: flex;
+    gap: 10px;
+    font: 400 13.5px/1.6 var(--font-sans);
+    color: var(--fg-3);
+    text-wrap: pretty;
+  }
+  .cautions li::before {
+    content: "";
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--neutral-400);
+    flex-shrink: 0;
+    margin-top: 8px;
+  }
+
+  /* ── ⑨ FAQ ───────────────────────────────── */
+  .faq details + details { border-top: 1px solid var(--divider); }
+  .faq summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 14px 0;
+    cursor: pointer;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq .q-mark {
+    font: 800 16px/1 var(--font-sans);
+    color: var(--violet-700);
+    flex-shrink: 0;
+  }
+  .faq .q-text {
+    flex: 1;
+    font: 600 15px/1.45 var(--font-sans);
+    color: var(--fg-1);
+    text-wrap: pretty;
+  }
+  .faq .chev {
+    flex-shrink: 0;
+    display: flex;
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+  .faq details[open] .chev { transform: rotate(180deg); }
+  .faq .answer {
+    border-top: 1px solid var(--divider);
+    padding: 14px 0 18px 26px;
+    font: 400 14.5px/1.6 var(--font-sans);
+    color: var(--fg-2);
+    text-wrap: pretty;
+  }
+
+  /* ── ⑩ Disclaimer ────────────────────────── */
+  .disclaimer {
+    padding: 4px 20px 28px;
+    font: 400 12px/1.6 var(--font-sans);
+    color: var(--fg-4);
+    text-wrap: pretty;
+  }
+
+  /* ── CTA dock ────────────────────────────── */
+  .cta-dock {
+    position: sticky;
+    bottom: 0;
+    margin-top: auto;
+    background: var(--bg-surface);
+    box-shadow: var(--shadow-tab);
+    border-top: 1px solid var(--divider);
+    padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
+  }
+  .cta {
+    width: 100%;
+    height: 52px;
+    border: 0;
+    border-radius: 14px;
+    background: var(--accent);
+    color: var(--on-accent);
+    font: 700 16px/1 var(--font-sans);
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+  }
+  .cta:active { background: var(--accent-press); transform: scale(0.98); }
+
+</style>
+</head>
+<body>
+<div class="screen" data-screen-label="시술소개 - 바이리즌">
+
+  <header class="appbar">
+    <button class="back" type="button" aria-label="뒤로"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5418B6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg></button>
+    <div class="bar-title">시술소개</div>
+  </header>
+
+  <section class="hero">
+    <span class="chip">도포형 부스터</span>
+    <h1>바이리즌</h1>
+    <p class="lead">히알루론산을 담은 바르는 부스터로 수분·피부결 케어를 돕는 화장품이에요.</p>
+    <p class="note">참고: 바이리즌은 주사가 아니라 피부에 바르는 <strong>도포형 화장품</strong> 부스터예요.</p>
+  </section>
+
+  <div class="band"></div>
+
+
+  <section class="block">
+    <h2>이런 분께 맞아요</h2>
+    <ul class="checklist">
+      <li>
+        <span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+        <span class="txt">피부가 건조하고 푸석한 분</span>
+      </li>
+      <li>
+        <span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+        <span class="txt">주사가 부담스러워 도포형 케어를 원하는 분</span>
+      </li>
+      <li>
+        <span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+        <span class="txt">시술 후 마무리 케어나 평소 케어를 원하는 분</span>
+      </li>
+    </ul>
+  </section>
+
+  <div class="band"></div>
+
+
+  <section class="block">
+    <h2>시술 소개</h2>
+    <p>바이리즌은 히알루론산을 담은 도포형 부스터 화장품이에요. 주사가 아니라 피부에 발라 흡수시키는 방식으로, 수분 공급과 피부결 케어에 초점이 있어요. 시술 직후 진정·마무리 케어나 평소 홈·관리실 케어에 활용돼요.</p>
+  </section>
+
+  <div class="band"></div>
+
+
+  <section class="block">
+    <h2>기대 효과</h2>
+    <ul class="tiles">
+      <li>피부 수분 케어<span class="tail">에 도움을 줄 수 있어요</span></li>
+      <li>피부결 정돈<span class="tail">에 도움을 줄 수 있어요</span></li>
+      <li>피부 컨디션 개선<span class="tail">에 도움을 줄 수 있어요</span></li>
+    </ul>
+  </section>
+
+  <div class="band"></div>
+
+
+  <section class="block">
+    <h2>시술 정보 요약</h2>
+    <div class="kv">
+      <div class="row"><div class="k">소요시간</div><div class="v">도포·흡수 과정에 따라 다름</div></div>
+      <div class="row"><div class="k">마취</div><div class="v">불필요(도포형)</div></div>
+      <div class="row"><div class="k">다운타임</div><div class="v">거의 없음(주사가 아님), 일시적 붉은기·따끔거림 가능</div></div>
+      <div class="row"><div class="k">권장 횟수·주기</div><div class="v">정기적 케어 권장, 제품 안내·전문가 상담</div></div>
+      <div class="row"><div class="k">유지 기간</div><div class="v">도포형 화장품으로, 꾸준한 케어가 전제예요</div></div>
+    </div>
+  </section>
+
+  <div class="band"></div>
+
+
+  <section class="block">
+    <h2>가격이 달라지는 이유</h2>
+    <div class="price-panel">
+      <p class="intro">바이리즌은 단독 케어인지 다른 시술과 함께하는 마무리 케어인지, 회차·구성에 따라 가격이 달라져요.</p>
+    </div>
+  </section>
+
+  <div class="band"></div>
+
+
+  <section class="block">
+    <h2>주의사항 · 부작용</h2>
+    <ul class="cautions">
+      <li>도포 후 일시적으로 붉은기나 따끔거림이 느껴질 수 있습니다.</li>
+      <li>화장품 성분에 알레르기 이력이 있다면 사용 전 알려야 합니다.</li>
+      <li>피부에 상처나 염증이 있는 부위에는 사용에 주의가 필요합니다.</li>
+    </ul>
+  </section>
+
+  <p class="disclaimer">본 정보는 일반적인 안내이며, 효과와 반응은 개인에 따라 다를 수 있습니다. 피부 상태에 맞는 사용은 의료진·전문가와 상담해 결정하시기 바랍니다.
+
+---</p>
+
+  <div class="cta-dock">
+    <button class="cta" type="button">바이리즌 최저가 검색</button>
+  </div>
+
+</div>
+</body>
+</html>

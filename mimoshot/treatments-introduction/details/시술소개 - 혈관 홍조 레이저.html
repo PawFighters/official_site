@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시술소개 — 혈관·홍조 레이저 | 미모샷</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--neutral-100);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  .screen {
+    max-width: 420px;
+    margin: 0 auto;
+    background: var(--bg-app);
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 0 1px var(--neutral-200);
+  }
+
+  /* ── App bar ─────────────────────────────── */
+  .appbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--bg-app);
+    border-bottom: 1px solid var(--divider);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 52px;
+  }
+  .appbar .back {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: 0;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+  }
+  .appbar .bar-title {
+    font: 600 16px/1 var(--font-sans);
+    color: var(--fg-1);
+  }
+
+  /* ── Hero ────────────────────────────────── */
+  .hero {
+    padding: 24px 20px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .chip {
+    align-self: flex-start;
+    background: var(--accent-soft);
+    color: var(--accent-press);
+    font: 700 11px/1 var(--font-sans);
+    padding: 6px 9px;
+    border-radius: 6px;
+    letter-spacing: 0.01em;
+  }
+  .hero h1 {
+    margin: 14px 0 0;
+    font: 700 28px/1.25 var(--font-sans);
+    color: var(--fg-1);
+    text-wrap: pretty;
+  }
+  .hero .en {
+    margin-top: 6px;
+    font: 500 13px/1.4 var(--font-sans);
+    color: var(--fg-3);
+  }
+  .hero .lead {
+    margin: 16px 0 0;
+    font: 500 17px/1.6 var(--font-sans);
+    color: var(--fg-2);
+    text-wrap: pretty;
+  }
+  .hero .lead strong { color: var(--accent); font-weight: 700; }
+
+  /* ── Section scaffolding ─────────────────── */
+  .band { height: 8px; background: var(--neutral-100); flex-shrink: 0; }
+  section.block { padding: 28px 20px; }
+  section.block > h2 {
+    margin: 0 0 16px;
+    font: var(--t-h3);
+    color: var(--fg-1);
+  }
+  section.block p {
+    margin: 0;
+    font: var(--t-body);
+    color: var(--fg-2);
+    text-wrap: pretty;
+  }
+  section.block p strong { color: var(--fg-1); font-weight: 600; }
+  section.block p + p { margin-top: 12px; }
+
+  /* ── ② Checklist ─────────────────────────── */
+  .checklist { display: flex; flex-direction: column; gap: 12px; }
+  .checklist li { display: flex; align-items: center; gap: 12px; }
+  .checklist .tick {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .checklist .txt { font: 500 15px/1.5 var(--font-sans); color: var(--fg-2); }
+  ul, ol { margin: 0; padding: 0; list-style: none; }
+
+  /* ── ④ Effect tiles ──────────────────────── */
+  .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tiles li {
+    background: var(--violet-50);
+    border-radius: 12px;
+    padding: 16px 14px;
+    font: 600 14px/1.45 var(--font-sans);
+    color: var(--violet-800);
+    text-wrap: pretty;
+  }
+  .tiles li:nth-child(odd):last-child { grid-column: 1 / -1; }
+  .tiles .tail { color: var(--violet-700); font-weight: 400; }
+
+  /* ── ⑤ Key-value card ────────────────────── */
+  .kv {
+    background: var(--neutral-50);
+    border-radius: 16px;
+    padding: 4px 18px;
+  }
+  .kv .row {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+  }
+  .kv .row + .row { border-top: 1px solid var(--divider); }
+  .kv .k {
+    flex: 0 0 84px;
+    font: 600 13px/1.55 var(--font-sans);
+    color: var(--fg-3);
+    padding-top: 1px;
+  }
+  .kv .v {
+    flex: 1;
+    font: 500 14px/1.55 var(--font-sans);
+    color: var(--fg-1);
+    font-variant-numeric: tabular-nums;
+    text-wrap: pretty;
+  }
+
+  /* ── ⑥ Price-factor panel ────────────────── */
+  .price-panel {
+    background: var(--violet-50);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .price-panel .intro {
+    font: var(--t-body);
+    color: var(--fg-2);
+    margin: 0 0 4px;
+    text-wrap: pretty;
+  }
+  .factor {
+    background: var(--bg-surface);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .factor .name { font: 700 14px/1.4 var(--font-sans); color: var(--fg-1); }
+  .factor .desc { font: 400 13.5px/1.5 var(--font-sans); color: var(--fg-2); }
+  /* 비교 조건 카드(단일 라인) */
+  .factor.cond { flex-direction: row; align-items: center; gap: 10px; }
+  .factor.cond .ck { flex-shrink: 0; display: flex; }
+  .factor.cond .cond-text { font: 600 14px/1.45 var(--font-sans); color: var(--fg-1); text-wrap: pretty; }
+  .compare-tip {
+    margin-top: 4px;
+    background: var(--accent);
+    color: var(--on-accent);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font: 600 14px/1.5 var(--font-sans);
+    text-wrap: pretty;
+  }
+
+  /* ── ⑦ Steps ─────────────────────────────── */
+  .steps { display: flex; flex-direction: column; }
+  .steps li { display: flex; gap: 14px; position: relative; padding-bottom: 20px; }
+  .steps li:last-child { padding-bottom: 0; }
+  .steps .num {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--on-accent);
+    font: 700 13px/1 var(--font-sans);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .steps li:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: 12px;
+    top: 26px;
+    bottom: 0;
+    width: 2px;
+    background: var(--violet-100);
+  }
+  .steps .txt {
+    font: 500 15px/1.5 var(--font-sans);
+    color: var(--fg-2);
+    padding-top: 3px;
+    text-wrap: pretty;
+  }
+
+  /* ── ⑧ Cautions ──────────────────────────── */
+  .cautions {
+    background: var(--neutral-50);
+    border-radius: 16px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .cautions li {
+    display: flex;
+    gap: 10px;
+    font: 400 13.5px/1.6 var(--font-sans);
+    color: var(--fg-3);
+    text-wrap: pretty;
+  }
+  .cautions li::before {
+    content: "";
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--neutral-400);
+    flex-shrink: 0;
+    margin-top: 8px;
+  }
+
+  /* ── 관련 기기 이름 (칩) ───────────────────── */
+  .devices { display: flex; flex-wrap: wrap; gap: 8px; }
+  .devices .dev {
+    background: var(--neutral-100);
+    color: var(--fg-2);
+    font: 500 13px/1.4 var(--font-sans);
+    padding: 8px 12px;
+    border-radius: var(--r-pill);
+  }
+  .devices-note {
+    margin: 0;
+    font: var(--t-body);
+    color: var(--fg-2);
+    text-wrap: pretty;
+  }
+  .devices-note + .devices { margin-top: 12px; }
+  .devices + .devices-caption { margin-top: 10px; }
+  .devices-caption {
+    margin: 0;
+    font: 400 12.5px/1.5 var(--font-sans);
+    color: var(--fg-3);
+    text-wrap: pretty;
+  }
+
+  /* ── ⑨ FAQ ───────────────────────────────── */
+  .faq details + details { border-top: 1px solid var(--divider); }
+  .faq summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 14px 0;
+    cursor: pointer;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq .q-mark {
+    font: 800 16px/1 var(--font-sans);
+    color: var(--violet-700);
+    flex-shrink: 0;
+  }
+  .faq .q-text {
+    flex: 1;
+    font: 600 15px/1.45 var(--font-sans);
+    color: var(--fg-1);
+    text-wrap: pretty;
+  }
+  .faq .chev {
+    flex-shrink: 0;
+    display: flex;
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+  .faq details[open] .chev { transform: rotate(180deg); }
+  .faq .answer {
+    border-top: 1px solid var(--divider);
+    padding: 14px 0 18px 26px;
+    font: 400 14.5px/1.6 var(--font-sans);
+    color: var(--fg-2);
+    text-wrap: pretty;
+  }
+
+  /* ── ⑩ Disclaimer ────────────────────────── */
+  .disclaimer {
+    padding: 4px 20px 28px;
+    font: 400 12px/1.6 var(--font-sans);
+    color: var(--fg-4);
+    text-wrap: pretty;
+  }
+
+  /* ── CTA dock ────────────────────────────── */
+  .cta-dock {
+    position: sticky;
+    bottom: 0;
+    margin-top: auto;
+    background: var(--bg-surface);
+    box-shadow: var(--shadow-tab);
+    border-top: 1px solid var(--divider);
+    padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
+  }
+  .cta {
+    width: 100%;
+    height: 52px;
+    border: 0;
+    border-radius: 14px;
+    background: var(--accent);
+    color: var(--on-accent);
+    font: 700 16px/1 var(--font-sans);
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+  }
+  .cta:active { background: var(--accent-press); transform: scale(0.98); }
+</style>
+</head>
+<body>
+<div class="screen" data-screen-label="시술소개 - 혈관·홍조 레이저">
+
+  <header class="appbar">
+    <button class="back" type="button" aria-label="뒤로"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5418B6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg></button>
+    <div class="bar-title">시술소개</div>
+  </header>
+
+  <!-- ① Hero -->
+  <section class="hero">
+    <span class="chip">홍조·혈관</span>
+    <h1>혈관·홍조 레이저</h1>
+    <p class="lead">붉은기·홍조·실핏줄을 일으키는 <strong>혈관을 표적해 가라앉히는</strong> 레이저예요.</p>
+  </section>
+
+  <div class="band"></div>
+
+  <!-- ② 이런 분께 맞아요 -->
+  <section class="block">
+    <h2>이런 분께 맞아요</h2>
+    <ul class="checklist">
+      <li>
+        <span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+        <span class="txt">얼굴이 잘 붉어지는 분 (안면홍조)</span>
+      </li>
+      <li>
+        <span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+        <span class="txt">코·볼에 실핏줄이 보이는 분</span>
+      </li>
+      <li>
+        <span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+        <span class="txt">여드름 자국이 붉게 남은 분</span>
+      </li>
+      <li>
+        <span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+        <span class="txt">붉은 흉터·홍조가 신경 쓰이는 분</span>
+      </li>
+    </ul>
+  </section>
+
+  <div class="band"></div>
+
+  <!-- ③ 시술 소개 -->
+  <section class="block">
+    <h2>시술 소개</h2>
+    <p>혈관 레이저는 색소가 아니라 혈관 속 <strong>헤모글로빈</strong>을 표적으로 삼아요. 특정 파장의 빛이 혈관에만 흡수돼, 열로 혈관을 응고시켜 가라앉혀요.</p>
+    <p><strong>브이빔(595nm)</strong>·엑셀V·더마V·클라리티 등 장비와 파장에 따라 닿는 혈관 깊이가 달라요. 표피 가까운 실핏줄부터 깊은 혈관까지 모드를 바꿔 다뤄요.</p>
+  </section>
+
+  <div class="band"></div>
+
+  <!-- ④ 기대 효과 -->
+  <section class="block">
+    <h2>기대 효과</h2>
+    <ul class="tiles">
+      <li>안면홍조·붉은기를 가라앉히는 데 <span class="tail">도움을 줄 수 있어요</span></li>
+      <li>코·볼 실핏줄(모세혈관확장) 개선에 <span class="tail">도움을 줄 수 있어요</span></li>
+      <li>붉게 남은 여드름 자국 완화에 <span class="tail">도움을 줄 수 있어요</span></li>
+      <li>붉은 흉터를 옅게 하는 데 <span class="tail">도움을 줄 수 있어요</span></li>
+    </ul>
+  </section>
+
+  <div class="band"></div>
+
+  <!-- ⑤ 시술 정보 요약 -->
+  <section class="block">
+    <h2>시술 정보 요약</h2>
+    <div class="kv">
+      <div class="row"><div class="k">소요시간</div><div class="v">약 10~20분 (부위에 따라)</div></div>
+      <div class="row"><div class="k">마취</div><div class="v">냉각장치가 있어 보통 마취 없이 진행</div></div>
+      <div class="row"><div class="k">다운타임</div><div class="v">보통 적은 편(일시적 붉은기), 설정에 따라 며칠 멍(자반)이 생기기도 해요</div></div>
+      <div class="row"><div class="k">권장 횟수·주기</div><div class="v">보통 2~4주 간격, 3~5회 이상 (개인차)</div></div>
+      <div class="row"><div class="k">유지 기간</div><div class="v">홍조·혈관은 체질·생활습관에 따라 재발할 수 있어요</div></div>
+    </div>
+  </section>
+
+  <div class="band"></div>
+
+  <!-- ⑥ 가격이 달라지는 이유 -->
+  <section class="block">
+    <h2>가격이 달라지는 이유</h2>
+    <div class="price-panel">
+      <p class="intro">혈관 레이저는 장비(브이빔·엑셀V·더마V·클라리티 등)와 파장에 따라 가격이 달라져요. 같은 홍조 치료라도 전체인지 부분(코·볼)인지, 모드(혈관/색소/제네시스)에 따라 차이가 나요. 홍조는 여러 번 반복하는 경우가 많아 1회권·패키지 구성도 영향을 줘요.</p>
+      <div class="factor cond"><span class="ck"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><div class="cond-text">장비·파장이 같은지</div></div>
+      <div class="factor cond"><span class="ck"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><div class="cond-text">범위(전체/부분)와 모드가 같은지</div></div>
+      <div class="factor cond"><span class="ck"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><div class="cond-text">1회인지 패키지인지</div></div>
+      <div class="compare-tip">비교할 때는 아래를 확인하세요.</div>
+    </div>
+  </section>
+
+  <div class="band"></div>
+
+  <!-- ⑦ 시술 과정 -->
+  <section class="block">
+    <h2>시술 과정</h2>
+    <ol class="steps">
+      <li><span class="num">1</span><span class="txt">혈관·홍조 부위와 피부 상태를 확인해요.</span></li>
+      <li><span class="num">2</span><span class="txt">눈 보호대를 착용해요.</span></li>
+      <li><span class="num">3</span><span class="txt">냉각하며 혈관 부위에 레이저를 조사해요.</span></li>
+      <li><span class="num">4</span><span class="txt">진정 관리 후 자외선 차단제를 발라요.</span></li>
+    </ol>
+  </section>
+
+  <div class="band"></div>
+
+  <!-- ⑧ 주의사항 · 부작용 -->
+  <section class="block">
+    <h2>주의사항 · 부작용</h2>
+    <ul class="cautions">
+      <li>시술 후 일시적인 붉은기나 부기가 생길 수 있으며, 보통 수시간~수일 내에 가라앉습니다.</li>
+      <li>설정·장비에 따라 며칠간 멍(자반)이 생길 수 있으며, 시간이 지나며 사라집니다.</li>
+      <li>드물게 색소침착이나 물집·딱지가 생길 수 있습니다.</li>
+      <li>홍조·혈관은 한 번에 사라지지 않고, 체질에 따라 재발할 수 있습니다.</li>
+      <li>시술 전후 사우나·음주·강한 자외선처럼 혈관을 확장시키는 자극은 피하는 것이 좋습니다.</li>
+    </ul>
+  </section>
+
+  <div class="band"></div>
+
+  <!-- 관련 기기 이름 -->
+  <section class="block">
+    <h2>관련 기기 이름</h2>
+      <div class="devices"><span class="dev">브이빔</span><span class="dev">브이빔(퍼펙타)</span><span class="dev">V레이저</span><span class="dev">엑셀V</span><span class="dev">엑셀V플러스</span><span class="dev">클라리티</span><span class="dev">클라리티2</span><span class="dev">클라리티베이직</span><span class="dev">더마V</span><span class="dev">시너지MPX</span><span class="dev">롱펄스Nd:YAG</span><span class="dev">포토로스타</span></div>
+  </section>
+
+  <div class="band"></div>
+
+  <!-- ⑨ 자주 묻는 질문 -->
+  <section class="block faq">
+    <h2>자주 묻는 질문</h2>
+    <details open>
+      <summary>
+        <span class="q-mark">Q</span>
+        <span class="q-text">홍조가 완전히 없어지나요?</span>
+        <span class="chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9D99A8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></span>
+      </summary>
+      <div class="answer">붉은기를 줄이는 데 도움이 되지만, 홍조는 체질·생활습관 영향이 커서 꾸준한 관리가 필요한 경우가 많아요.</div>
+    </details>
+    <details>
+      <summary>
+        <span class="q-mark">Q</span>
+        <span class="q-text">멍이 꼭 드나요?</span>
+        <span class="chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9D99A8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></span>
+      </summary>
+      <div class="answer">요즘은 멍을 최소화한 설정을 많이 써요. 다만 짙은 혈관은 효과를 위해 일부러 멍이 드는 설정을 쓰기도 해요.</div>
+    </details>
+  </section>
+
+  <!-- ⑩ 안내 문구 -->
+  <p class="disclaimer">본 정보는 일반적인 시술 안내이며, 효과와 부작용은 개인에 따라 다를 수 있습니다. 시술 여부는 반드시 의료진과의 상담을 통해 결정하시기 바랍니다.</p>
+
+  <!-- CTA -->
+  <div class="cta-dock">
+    <button class="cta" type="button">혈관·홍조 레이저 최저가 검색</button>
+  </div>
+
+</div>
+</body>
+</html>

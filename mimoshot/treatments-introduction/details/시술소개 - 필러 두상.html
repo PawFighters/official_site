@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시술소개 — 두상 | 미모샷</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--neutral-100);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  .screen {
+    max-width: 420px;
+    margin: 0 auto;
+    background: var(--bg-app);
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 0 1px var(--neutral-200);
+  }
+
+  /* ── App bar ─────────────────────────────── */
+  .appbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--bg-app);
+    border-bottom: 1px solid var(--divider);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 52px;
+  }
+  .appbar .back {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: 0;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+  }
+  .appbar .bar-title {
+    font: 600 16px/1 var(--font-sans);
+    color: var(--fg-1);
+  }
+
+  /* ── Hero ────────────────────────────────── */
+  .hero {
+    padding: 24px 20px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .chip {
+    align-self: flex-start;
+    background: var(--accent-soft);
+    color: var(--accent-press);
+    font: 700 11px/1 var(--font-sans);
+    padding: 6px 9px;
+    border-radius: 6px;
+    letter-spacing: 0.01em;
+  }
+  .hero h1 {
+    margin: 14px 0 0;
+    font: 700 28px/1.25 var(--font-sans);
+    color: var(--fg-1);
+    text-wrap: pretty;
+  }
+  .hero .en {
+    margin-top: 6px;
+    font: 500 13px/1.4 var(--font-sans);
+    color: var(--fg-3);
+  }
+  .hero .lead {
+    margin: 16px 0 0;
+    font: 500 17px/1.6 var(--font-sans);
+    color: var(--fg-2);
+    text-wrap: pretty;
+  }
+  .hero .lead strong { color: var(--accent); font-weight: 700; }
+
+  /* ── Section scaffolding ─────────────────── */
+  .band { height: 8px; background: var(--neutral-100); flex-shrink: 0; }
+  section.block { padding: 28px 20px; }
+  section.block > h2 {
+    margin: 0 0 16px;
+    font: var(--t-h3);
+    color: var(--fg-1);
+  }
+  section.block p {
+    margin: 0;
+    font: var(--t-body);
+    color: var(--fg-2);
+    text-wrap: pretty;
+  }
+  section.block p strong { color: var(--fg-1); font-weight: 600; }
+  section.block p + p { margin-top: 12px; }
+
+  /* ── ② Checklist ─────────────────────────── */
+  .checklist { display: flex; flex-direction: column; gap: 12px; }
+  .checklist li { display: flex; align-items: center; gap: 12px; }
+  .checklist .tick {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .checklist .txt { font: 500 15px/1.5 var(--font-sans); color: var(--fg-2); }
+  ul, ol { margin: 0; padding: 0; list-style: none; }
+
+  /* ── ④ Effect tiles ──────────────────────── */
+  .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tiles li {
+    background: var(--violet-50);
+    border-radius: 12px;
+    padding: 16px 14px;
+    font: 600 14px/1.45 var(--font-sans);
+    color: var(--violet-800);
+    text-wrap: pretty;
+  }
+  .tiles li:nth-child(odd):last-child { grid-column: 1 / -1; }
+  .tiles .tail { color: var(--violet-700); font-weight: 400; }
+
+  /* ── ⑤ Key-value card ────────────────────── */
+  .kv {
+    background: var(--neutral-50);
+    border-radius: 16px;
+    padding: 4px 18px;
+  }
+  .kv .row {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+  }
+  .kv .row + .row { border-top: 1px solid var(--divider); }
+  .kv .k {
+    flex: 0 0 84px;
+    font: 600 13px/1.55 var(--font-sans);
+    color: var(--fg-3);
+    padding-top: 1px;
+  }
+  .kv .v {
+    flex: 1;
+    font: 500 14px/1.55 var(--font-sans);
+    color: var(--fg-1);
+    font-variant-numeric: tabular-nums;
+    text-wrap: pretty;
+  }
+
+  /* ── ⑥ Price-factor panel ────────────────── */
+  .price-panel {
+    background: var(--violet-50);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .price-panel .intro {
+    font: var(--t-body);
+    color: var(--fg-2);
+    margin: 0 0 4px;
+    text-wrap: pretty;
+  }
+  .factor {
+    background: var(--bg-surface);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .factor .name { font: 700 14px/1.4 var(--font-sans); color: var(--fg-1); }
+  .factor .desc { font: 400 13.5px/1.5 var(--font-sans); color: var(--fg-2); }
+  .compare-tip {
+    margin-top: 4px;
+    background: var(--accent);
+    color: var(--on-accent);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font: 600 14px/1.5 var(--font-sans);
+    text-wrap: pretty;
+  }
+
+  /* ── ⑦ Steps ─────────────────────────────── */
+  .steps { display: flex; flex-direction: column; }
+  .steps li { display: flex; gap: 14px; position: relative; padding-bottom: 20px; }
+  .steps li:last-child { padding-bottom: 0; }
+  .steps .num {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--on-accent);
+    font: 700 13px/1 var(--font-sans);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .steps li:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: 12px;
+    top: 26px;
+    bottom: 0;
+    width: 2px;
+    background: var(--violet-100);
+  }
+  .steps .txt {
+    font: 500 15px/1.5 var(--font-sans);
+    color: var(--fg-2);
+    padding-top: 3px;
+    text-wrap: pretty;
+  }
+
+  /* ── ⑧ Cautions ──────────────────────────── */
+  .cautions {
+    background: var(--neutral-50);
+    border-radius: 16px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .cautions li {
+    display: flex;
+    gap: 10px;
+    font: 400 13.5px/1.6 var(--font-sans);
+    color: var(--fg-3);
+    text-wrap: pretty;
+  }
+  .cautions li::before {
+    content: "";
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--neutral-400);
+    flex-shrink: 0;
+    margin-top: 8px;
+  }
+
+  /* ── ⑨ FAQ ───────────────────────────────── */
+  .faq details + details { border-top: 1px solid var(--divider); }
+  .faq summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 14px 0;
+    cursor: pointer;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq .q-mark {
+    font: 800 16px/1 var(--font-sans);
+    color: var(--violet-700);
+    flex-shrink: 0;
+  }
+  .faq .q-text {
+    flex: 1;
+    font: 600 15px/1.45 var(--font-sans);
+    color: var(--fg-1);
+    text-wrap: pretty;
+  }
+  .faq .chev {
+    flex-shrink: 0;
+    display: flex;
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+  .faq details[open] .chev { transform: rotate(180deg); }
+  .faq .answer {
+    border-top: 1px solid var(--divider);
+    padding: 14px 0 18px 26px;
+    font: 400 14.5px/1.6 var(--font-sans);
+    color: var(--fg-2);
+    text-wrap: pretty;
+  }
+
+  /* ── ⑩ Disclaimer ────────────────────────── */
+  .disclaimer {
+    padding: 4px 20px 28px;
+    font: 400 12px/1.6 var(--font-sans);
+    color: var(--fg-4);
+    text-wrap: pretty;
+  }
+
+  /* ── CTA dock ────────────────────────────── */
+  .cta-dock {
+    position: sticky;
+    bottom: 0;
+    margin-top: auto;
+    background: var(--bg-surface);
+    box-shadow: var(--shadow-tab);
+    border-top: 1px solid var(--divider);
+    padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
+  }
+  .cta {
+    width: 100%;
+    height: 52px;
+    border: 0;
+    border-radius: 14px;
+    background: var(--accent);
+    color: var(--on-accent);
+    font: 700 16px/1 var(--font-sans);
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+  }
+  .cta:active { background: var(--accent-press); transform: scale(0.98); }
+</style>
+</head>
+<body>
+<div class="screen" data-screen-label="시술소개 - 두상">
+
+  <header class="appbar">
+    <button class="back" type="button" aria-label="뒤로">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5418B6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+    </button>
+    <div class="bar-title">시술소개</div>
+  </header>
+
+  <section class="hero">
+    <span class="chip">필러</span>
+    <h1>두상</h1>
+    <p class="lead">납작한 뒤통수나 정수리를 채워 옆·뒤 <strong>두상 라인을 둥글게 보완</strong>해요.</p>
+  </section>
+
+  <div class="band"></div>
+
+  <section class="block">
+    <h2>이런 분께 맞아요</h2>
+    <ul class="checklist">
+      <li>
+        <span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+        <span class="txt">뒤통수가 납작해 옆모습이 아쉬운 분</span>
+      </li>
+      <li>
+        <span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+        <span class="txt">정수리가 꺼져 두상이 빈약해 보이는 분</span>
+      </li>
+      <li>
+        <span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+        <span class="txt">모자·헤어스타일 핏이 안 사는 분</span>
+      </li>
+      <li>
+        <span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+        <span class="txt">수술 없이 두상을 보완하고 싶은 분</span>
+      </li>
+    </ul>
+  </section>
+
+  <div class="band"></div>
+
+  <section class="block">
+    <h2>시술 소개</h2>
+    <p>두상필러는 납작한 뒤통수나 꺼진 정수리에 필러를 주입해 두상 라인을 둥글게 보완하는 시술이에요. 얼굴 필러보다 주입 부위가 넓고 깊어, 시술 난이도가 높은 편이에요.</p>
+    <p>사용하는 필러 종류에 따라 유지 기간과 특성이 달라요.</p>
+  </section>
+
+  <div class="band"></div>
+
+  <section class="block">
+    <h2>기대 효과</h2>
+    <ul class="tiles">
+      <li>납작한 뒤통수 라인 보완<span class="tail">에 도움</span></li>
+      <li>꺼진 정수리 볼륨 보완</li>
+      <li>옆·뒤 두상 입체감 개선</li>
+      <li>헤어스타일 핏 보완<span class="tail">에 도움</span></li>
+    </ul>
+  </section>
+
+  <div class="band"></div>
+
+  <section class="block">
+    <h2>시술 정보 요약</h2>
+    <div class="kv">
+      <div class="row"><div class="k">소요 시간</div><div class="v">약 20~30분</div></div>
+      <div class="row"><div class="k">마취</div><div class="v">마취 크림 등(필요 시)</div></div>
+      <div class="row"><div class="k">다운타임</div><div class="v">멍·부기 며칠 이내, 약 2주간 자리 잡음</div></div>
+      <div class="row"><div class="k">권장 주기</div><div class="v">제품·상태에 따라 다름</div></div>
+      <div class="row"><div class="k">유지 기간</div><div class="v">제품에 따라 차이가 크며, 반영구 제품도 사용</div></div>
+    </div>
+  </section>
+
+  <div class="band"></div>
+
+  <section class="block">
+    <h2>가격이 달라지는 이유</h2>
+    <div class="price-panel">
+      <p class="intro">두상필러는 채우는 면적이 넓어 용량에 따라 가격 차이가 매우 커요. 사용하는 필러 종류(흡수성·콜라겐 자극 등)에 따라서도 달라져요.</p>
+      <div class="compare-tip">비교할 때는 용량과 필러 종류가 같은 조건인지 꼭 확인하세요.</div>
+    </div>
+  </section>
+
+  <div class="band"></div>
+
+  <section class="block">
+    <h2>시술 과정</h2>
+    <ol class="steps">
+      <li><span class="num">1</span><span class="txt">두상 모양과 보완 범위를 상담으로 확인해요.</span></li>
+      <li><span class="num">2</span><span class="txt">부위를 소독하고 필요 시 마취해요.</span></li>
+      <li><span class="num">3</span><span class="txt">두피 깊은 층에 필러를 주입해요.</span></li>
+      <li><span class="num">4</span><span class="txt">모양을 다듬고 자리 잡도록 관리 안내를 받아요.</span></li>
+    </ol>
+  </section>
+
+  <div class="band"></div>
+
+  <section class="block">
+    <h2>주의사항 · 부작용</h2>
+    <ul class="cautions">
+      <li>멍, 부기가 생길 수 있으며 시술 후 약 2주간 자리 잡는 관리가 중요합니다.</li>
+      <li>주입 부위가 넓고 깊어 시술 난이도가 높으므로, 임상 경험이 풍부한 의료진과 계획을 세워야 합니다.</li>
+      <li>사용 필러 종류에 따라 유지 기간·녹임 가능 여부가 다르니, 어떤 제품인지 반드시 확인합니다.</li>
+      <li>정품·정량 사용 여부와 응급 대비 시스템을 갖춘 곳인지 확인하는 것이 좋습니다.</li>
+    </ul>
+  </section>
+
+  <div class="band"></div>
+
+  <section class="block faq">
+    <h2>자주 묻는 질문</h2>
+    <details open>
+      <summary>
+        <span class="q-mark">Q</span>
+        <span class="q-text">효과가 얼마나 가나요?</span>
+        <span class="chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9D99A8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></span>
+      </summary>
+      <div class="answer">사용하는 필러에 따라 차이가 커요. 반영구로 알려진 제품도 있어, 시술 전 종류를 확인하세요.</div>
+    </details>
+    <details>
+      <summary>
+        <span class="q-mark">Q</span>
+        <span class="q-text">부작용이 생기면 녹일 수 있나요?</span>
+        <span class="chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9D99A8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></span>
+      </summary>
+      <div class="answer">히알루론산 필러는 녹일 수 있지만, 종류에 따라 녹지 않는 것도 있어 사전 확인이 중요해요.</div>
+    </details>
+  </section>
+
+  <p class="disclaimer">본 정보는 일반적인 시술 안내이며, 효과와 부작용은 개인에 따라 다를 수 있습니다. 시술 여부는 반드시 의료진과의 상담을 통해 결정하시기 바랍니다.</p>
+
+  <div class="cta-dock">
+    <button class="cta" type="button">두상 최저가 검색</button>
+  </div>
+
+</div>
+</body>
+</html>

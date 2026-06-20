@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시술소개 — 디클래시 CaHA | 미모샷</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--neutral-100);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  .screen {
+    max-width: 420px;
+    margin: 0 auto;
+    background: var(--bg-app);
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 0 1px var(--neutral-200);
+  }
+
+  /* ── App bar ─────────────────────────────── */
+  .appbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--bg-app);
+    border-bottom: 1px solid var(--divider);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 52px;
+  }
+  .appbar .back {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: 0;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+  }
+  .appbar .bar-title {
+    font: 600 16px/1 var(--font-sans);
+    color: var(--fg-1);
+  }
+
+  /* ── Hero ────────────────────────────────── */
+  .hero {
+    padding: 24px 20px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .chip {
+    align-self: flex-start;
+    background: var(--accent-soft);
+    color: var(--accent-press);
+    font: 700 11px/1 var(--font-sans);
+    padding: 6px 9px;
+    border-radius: 6px;
+    letter-spacing: 0.01em;
+  }
+  .hero h1 {
+    margin: 14px 0 0;
+    font: 700 28px/1.25 var(--font-sans);
+    color: var(--fg-1);
+    text-wrap: pretty;
+  }
+  .hero .en {
+    margin-top: 6px;
+    font: 500 13px/1.4 var(--font-sans);
+    color: var(--fg-3);
+  }
+  .hero .lead {
+    margin: 16px 0 0;
+    font: 500 17px/1.6 var(--font-sans);
+    color: var(--fg-2);
+    text-wrap: pretty;
+  }
+  .hero .lead strong { color: var(--accent); font-weight: 700; }
+  .hero .note {
+    margin: 16px 0 0;
+    background: var(--neutral-50);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font: 400 13px/1.6 var(--font-sans);
+    color: var(--fg-3);
+    text-wrap: pretty;
+  }
+  .hero .note strong { color: var(--fg-2); font-weight: 600; }
+
+  /* ── Section scaffolding ─────────────────── */
+  .band { height: 8px; background: var(--neutral-100); flex-shrink: 0; }
+  section.block { padding: 28px 20px; }
+  section.block > h2 {
+    margin: 0 0 16px;
+    font: var(--t-h3);
+    color: var(--fg-1);
+  }
+  section.block p {
+    margin: 0;
+    font: var(--t-body);
+    color: var(--fg-2);
+    text-wrap: pretty;
+  }
+  section.block p strong { color: var(--fg-1); font-weight: 600; }
+  section.block p + p { margin-top: 12px; }
+
+  /* ── ② Checklist ─────────────────────────── */
+  .checklist { display: flex; flex-direction: column; gap: 12px; }
+  .checklist li { display: flex; align-items: center; gap: 12px; }
+  .checklist .tick {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .checklist .txt { font: 500 15px/1.5 var(--font-sans); color: var(--fg-2); }
+  ul, ol { margin: 0; padding: 0; list-style: none; }
+
+  /* ── ④ Effect tiles ──────────────────────── */
+  .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tiles li {
+    background: var(--violet-50);
+    border-radius: 12px;
+    padding: 16px 14px;
+    font: 600 14px/1.45 var(--font-sans);
+    color: var(--violet-800);
+    text-wrap: pretty;
+  }
+  .tiles li:nth-child(odd):last-child { grid-column: 1 / -1; }
+  .tiles .tail { color: var(--violet-700); font-weight: 400; }
+
+  /* ── ⑤ Key-value card ────────────────────── */
+  .kv {
+    background: var(--neutral-50);
+    border-radius: 16px;
+    padding: 4px 18px;
+  }
+  .kv .row {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+  }
+  .kv .row + .row { border-top: 1px solid var(--divider); }
+  .kv .k {
+    flex: 0 0 84px;
+    font: 600 13px/1.55 var(--font-sans);
+    color: var(--fg-3);
+    padding-top: 1px;
+  }
+  .kv .v {
+    flex: 1;
+    font: 500 14px/1.55 var(--font-sans);
+    color: var(--fg-1);
+    font-variant-numeric: tabular-nums;
+    text-wrap: pretty;
+  }
+
+  /* ── ⑥ Price-factor panel ────────────────── */
+  .price-panel {
+    background: var(--violet-50);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .price-panel .intro {
+    font: var(--t-body);
+    color: var(--fg-2);
+    margin: 0 0 4px;
+    text-wrap: pretty;
+  }
+  .factor {
+    background: var(--bg-surface);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .factor .name { font: 700 14px/1.4 var(--font-sans); color: var(--fg-1); }
+  .factor .desc { font: 400 13.5px/1.5 var(--font-sans); color: var(--fg-2); }
+  .compare-tip {
+    margin-top: 4px;
+    background: var(--accent);
+    color: var(--on-accent);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font: 600 14px/1.5 var(--font-sans);
+    text-wrap: pretty;
+  }
+
+  /* ── ⑦ Steps ─────────────────────────────── */
+  .steps { display: flex; flex-direction: column; }
+  .steps li { display: flex; gap: 14px; position: relative; padding-bottom: 20px; }
+  .steps li:last-child { padding-bottom: 0; }
+  .steps .num {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--on-accent);
+    font: 700 13px/1 var(--font-sans);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .steps li:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: 12px;
+    top: 26px;
+    bottom: 0;
+    width: 2px;
+    background: var(--violet-100);
+  }
+  .steps .txt {
+    font: 500 15px/1.5 var(--font-sans);
+    color: var(--fg-2);
+    padding-top: 3px;
+    text-wrap: pretty;
+  }
+
+  /* ── ⑧ Cautions ──────────────────────────── */
+  .cautions {
+    background: var(--neutral-50);
+    border-radius: 16px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .cautions li {
+    display: flex;
+    gap: 10px;
+    font: 400 13.5px/1.6 var(--font-sans);
+    color: var(--fg-3);
+    text-wrap: pretty;
+  }
+  .cautions li::before {
+    content: "";
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--neutral-400);
+    flex-shrink: 0;
+    margin-top: 8px;
+  }
+
+  /* ── ⑨ FAQ ───────────────────────────────── */
+  .faq details + details { border-top: 1px solid var(--divider); }
+  .faq summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 14px 0;
+    cursor: pointer;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq .q-mark {
+    font: 800 16px/1 var(--font-sans);
+    color: var(--violet-700);
+    flex-shrink: 0;
+  }
+  .faq .q-text {
+    flex: 1;
+    font: 600 15px/1.45 var(--font-sans);
+    color: var(--fg-1);
+    text-wrap: pretty;
+  }
+  .faq .chev {
+    flex-shrink: 0;
+    display: flex;
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+  .faq details[open] .chev { transform: rotate(180deg); }
+  .faq .answer {
+    border-top: 1px solid var(--divider);
+    padding: 14px 0 18px 26px;
+    font: 400 14.5px/1.6 var(--font-sans);
+    color: var(--fg-2);
+    text-wrap: pretty;
+  }
+
+  /* ── ⑩ Disclaimer ────────────────────────── */
+  .disclaimer {
+    padding: 4px 20px 28px;
+    font: 400 12px/1.6 var(--font-sans);
+    color: var(--fg-4);
+    text-wrap: pretty;
+  }
+
+  /* ── CTA dock ────────────────────────────── */
+  .cta-dock {
+    position: sticky;
+    bottom: 0;
+    margin-top: auto;
+    background: var(--bg-surface);
+    box-shadow: var(--shadow-tab);
+    border-top: 1px solid var(--divider);
+    padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
+  }
+  .cta {
+    width: 100%;
+    height: 52px;
+    border: 0;
+    border-radius: 14px;
+    background: var(--accent);
+    color: var(--on-accent);
+    font: 700 16px/1 var(--font-sans);
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+  }
+  .cta:active { background: var(--accent-press); transform: scale(0.98); }
+
+</style>
+</head>
+<body>
+<div class="screen" data-screen-label="시술소개 - 디클래시 CaHA">
+
+  <header class="appbar">
+    <button class="back" type="button" aria-label="뒤로"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5418B6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg></button>
+    <div class="bar-title">시술소개</div>
+  </header>
+
+  <section class="hero">
+    <span class="chip">콜라겐 부스터</span>
+    <h1>디클래시 CaHA</h1>
+    <p class="lead">CaHA(칼슘) 성분으로 콜라겐 생성과 볼륨을 돕는 콜라겐 부스터예요.</p>
+  </section>
+
+  <div class="band"></div>
+
+
+  <section class="block">
+    <h2>이런 분께 맞아요</h2>
+    <ul class="checklist">
+      <li>
+        <span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+        <span class="txt">옆볼·팔자·관자 등 꺼짐이 신경 쓰이는 분</span>
+      </li>
+      <li>
+        <span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+        <span class="txt">볼륨과 함께 피부 탄력·밀도를 가꾸고 싶은 분</span>
+      </li>
+      <li>
+        <span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+        <span class="txt">자연스러운 변화를 원하는 분</span>
+      </li>
+    </ul>
+  </section>
+
+  <div class="band"></div>
+
+
+  <section class="block">
+    <h2>시술 소개</h2>
+    <p>디클래시 CaHA는 칼슘 하이드록시아파타이트(CaHA) 기반의 콜라겐 부스터예요. 주입 직후 꺼진 부위 볼륨을 보완하고, 균일한 구형 입자(라티스 포어 구조)가 서서히 분해되며 섬유아세포를 자극해 콜라겐 생성을 유도해요. DNC 에스테틱스의 제품으로, 안면부 주름을 일시적으로 개선하는 의료기기로 허가받았어요.</p>
+  </section>
+
+  <div class="band"></div>
+
+
+  <section class="block">
+    <h2>기대 효과</h2>
+    <ul class="tiles">
+      <li>꺼진 부위 볼륨 개선<span class="tail">에 도움을 줄 수 있어요</span></li>
+      <li>콜라겐 생성을 통한 탄력 개선<span class="tail">에 도움을 줄 수 있어요</span></li>
+      <li>피부 밀도·피부결 개선<span class="tail">에 도움을 줄 수 있어요</span></li>
+    </ul>
+  </section>
+
+  <div class="band"></div>
+
+
+  <section class="block">
+    <h2>시술 정보 요약</h2>
+    <div class="kv">
+      <div class="row"><div class="k">소요시간</div><div class="v">약 20~30분</div></div>
+      <div class="row"><div class="k">마취</div><div class="v">마취크림 도포</div></div>
+      <div class="row"><div class="k">다운타임</div><div class="v">붓기·붉은기·멍이 수일, 개인에 따라 차이</div></div>
+      <div class="row"><div class="k">권장 횟수·주기</div><div class="v">부위·목적에 따라 다르며 의료진과 상담</div></div>
+      <div class="row"><div class="k">유지 기간</div><div class="v">개인차가 있으며 의료진 상담 권장</div></div>
+    </div>
+  </section>
+
+  <div class="band"></div>
+
+
+  <section class="block">
+    <h2>가격이 달라지는 이유</h2>
+    <div class="price-panel">
+      <p class="intro">디클래시 CaHA는 사용 용량과 시술 부위, 횟수에 따라 가격이 달라져요. 1회권인지 패키지인지에 따라서도 차이가 나요.</p>
+      <div class="compare-tip">비교할 때는 용량과 횟수 조건을 맞춰서 보세요.</div>
+    </div>
+  </section>
+
+  <div class="band"></div>
+
+
+  <section class="block">
+    <h2>주의사항 · 부작용</h2>
+    <ul class="cautions">
+      <li>시술 후 붓기, 붉은기, 멍이 나타날 수 있습니다.</li>
+      <li>콜라겐 부스터 특성상 드물게 결절이 생길 수 있어, 정밀한 주입이 중요합니다.</li>
+      <li>시술 후 수일간 음주, 사우나, 격렬한 운동은 피하는 것이 좋습니다.</li>
+      <li>임신·수유 중이거나 시술 부위에 감염·염증이 있다면 시술 전 의료진과 상담이 필요합니다.</li>
+    </ul>
+  </section>
+
+  <p class="disclaimer">본 정보는 일반적인 시술 안내이며, 효과와 부작용은 개인에 따라 다를 수 있습니다. 시술 여부는 반드시 의료진과의 상담을 통해 결정하시기 바랍니다.
+
+---</p>
+
+  <div class="cta-dock">
+    <button class="cta" type="button">디클래시 CaHA 최저가 검색</button>
+  </div>
+
+</div>
+</body>
+</html>
