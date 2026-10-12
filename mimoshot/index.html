@@ -1,65 +1,252 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko" data-lang="ko">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Mimoshot | Aesthetic Treatment Price Comparison · Paw Fighters</title>
-    <meta name="description" content="Mimoshot by Paw Fighters helps you compare aesthetic treatment prices, per-unit rates, averages, and promotions, and find clinics offering the treatments you want.">
+    <title>미모샷 | 한눈에 보는 피부과 가격비교 · Paw Fighters</title>
+    <meta name="description" content="미모샷은 병원마다 다른 피부과 시술 패키지를 cc·샷·유닛 단위 가격으로 환산해 지역 평균과 함께 비교해 주는 앱입니다. 리쥬란, 보톡스, 써마지 등 시술 가격을 총액이 아닌 단가로 비교하세요.">
+    <meta name="theme-color" content="#7C3AED">
     <link rel="canonical" href="https://www.pawfighters.com/mimoshot/">
     <link rel="icon" type="image/png" href="assets/app_icon.png">
+    <link rel="apple-touch-icon" href="assets/app_icon.png">
+
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Mimoshot | Aesthetic Treatment Price Comparison">
-    <meta property="og:description" content="Compare aesthetic treatment prices across clinics at a glance with Mimoshot, an app by Paw Fighters.">
+    <meta property="og:site_name" content="Mimoshot · Paw Fighters">
+    <meta property="og:title" content="미모샷 | 피부과 가격, 총액 말고 단가로.">
+    <meta property="og:description" content="병원마다 다른 패키지 구성을 같은 단위로 환산해, 지역 평균과 함께 비교해 드려요.">
     <meta property="og:url" content="https://www.pawfighters.com/mimoshot/">
-    <meta property="og:image" content="https://www.pawfighters.com/mimoshot/assets/app_icon.png">
+    <meta property="og:image" content="https://www.pawfighters.com/mimoshot/assets/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "MobileApplication",
+        "name": "미모샷 (Mimoshot)",
+        "alternateName": "Mimoshot – K-Clinic Prices",
+        "operatingSystem": "iOS, Android",
+        "applicationCategory": "HealthApplication",
+        "description": "피부과 시술 가격을 단위당 가격으로 환산해 지역 평균과 비교하는 앱",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+        "downloadUrl": [
+            "https://apps.apple.com/kr/app/id6760410241",
+            "https://play.google.com/store/apps/details?id=com.pawfighters.mimoshot"
+        ],
+        "publisher": {
+            "@type": "Organization",
+            "name": "Paw Fighters LC.",
+            "url": "https://www.pawfighters.com/",
+            "email": "byang@pawfighters.com"
+        }
+    }
+    </script>
+
+    <script>
+        /* 언어 결정: ?lang= > 저장된 선택 > 브라우저 언어. 깜빡임 없도록 head에서 실행 */
+        (function () {
+            var lang = null;
+            try {
+                var q = new URLSearchParams(location.search).get('lang');
+                if (q === 'ko' || q === 'en') lang = q;
+                if (!lang) lang = localStorage.getItem('mimoshot-lang');
+            } catch (e) { }
+            if (lang !== 'ko' && lang !== 'en') {
+                var nav = (navigator.language || 'ko').toLowerCase();
+                lang = nav.indexOf('ko') === 0 ? 'ko' : 'en';
+            }
+            document.documentElement.setAttribute('data-lang', lang);
+            document.documentElement.setAttribute('lang', lang);
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,700..900&display=swap">
+
     <style>
         :root {
             color-scheme: light;
-            --purple: #7c3aed;
-            --ink: #241b35;
-            --muted: #62596f;
-            --border: #e8e1f1;
+            --violet: #7C3AED;
+            --violet-600: #6B21D9;
+            --violet-700: #5418B6;
+            --violet-900: #24095A;
+            --violet-50: #F4EFFE;
+            --violet-100: #ECE3FE;
+            --violet-200: #D9C5FC;
+            --bg: #FEF7FF;
+            --card: #FFFCFF;
+            --ink: #1D1B20;
+            --muted: #49454F;
+            --subtle: #6F6B7A;
+            --line: #E7E0EC;
+            --coral: #F04438;
+            --radius: 16px;
+            --shadow-card: 0 6px 24px rgba(60, 30, 120, 0.08);
+            --shadow-pop: 0 24px 60px rgba(60, 30, 120, 0.18);
+            --font: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+            --num: "Archivo", "Pretendard Variable", Pretendard, system-ui, sans-serif;
+            --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        * {
+        *,
+        *::before,
+        *::after {
             box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 76px;
+            -webkit-text-size-adjust: 100%;
         }
 
         body {
             margin: 0;
-            background: #faf8fd;
+            background: var(--bg);
             color: var(--ink);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", Arial, sans-serif;
-            line-height: 1.7;
+            font-family: var(--font);
+            font-size: 16px;
+            line-height: 1.65;
             word-break: keep-all;
             overflow-wrap: break-word;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
         }
 
         a {
-            color: #6426c7;
+            color: var(--violet-600);
             text-underline-offset: 4px;
         }
 
-        a:focus-visible {
-            outline: 3px solid var(--purple);
-            outline-offset: 5px;
+        a:focus-visible,
+        button:focus-visible {
+            outline: 3px solid var(--violet);
+            outline-offset: 3px;
+            border-radius: 8px;
         }
 
-        .page {
-            max-width: 1040px;
+        /* ── 언어 토글 ── */
+        html[data-lang="ko"] .en,
+        html[data-lang="en"] .ko {
+            display: none !important;
+        }
+
+        .wrap {
+            width: 100%;
+            max-width: 1120px;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 0 20px;
         }
 
+        .num {
+            font-family: var(--num);
+            font-stretch: 112%;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .logo-mark {
+            display: block;
+            height: 22px;
+            width: auto;
+            color: var(--violet);
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 0 18px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: var(--violet-100);
+            color: var(--violet-700);
+            font-size: 13px;
+            font-weight: 650;
+            letter-spacing: -0.01em;
+        }
+
+        .section {
+            padding: 88px 0;
+        }
+
+        .section-head {
+            max-width: 680px;
+            margin-bottom: 40px;
+        }
+
+        .section-head.center {
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+        .kicker {
+            margin: 0 0 12px;
+            color: var(--violet);
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 0;
+            letter-spacing: -0.035em;
+            line-height: 1.25;
+        }
+
+        h2 {
+            font-size: clamp(28px, 4.2vw, 40px);
+            font-weight: 750;
+        }
+
+        h3 {
+            font-size: 19px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .lead {
+            margin: 16px 0 0;
+            color: var(--muted);
+            font-size: 17px;
+        }
+
+        /* ── Header ── */
         .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(254, 247, 255, 0.82);
+            -webkit-backdrop-filter: saturate(180%) blur(14px);
+            backdrop-filter: saturate(180%) blur(14px);
+            border-bottom: 1px solid transparent;
+            transition: border-color .2s, box-shadow .2s;
+        }
+
+        .site-header.scrolled {
+            border-bottom-color: var(--line);
+        }
+
+        .site-header .wrap {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            padding-top: 24px;
-            padding-bottom: 24px;
-            border-bottom: 1px solid var(--border);
+            gap: 24px;
+            height: 64px;
         }
 
         .brand {
@@ -67,281 +254,1830 @@
             align-items: center;
             gap: 10px;
             color: var(--ink);
-            font-size: 19px;
+            text-decoration: none;
             font-weight: 750;
+            font-size: 17px;
+            letter-spacing: -0.02em;
+        }
+
+        .brand .divider {
+            width: 1px;
+            height: 16px;
+            background: var(--line);
+        }
+
+        .brand .name {
+            color: var(--muted);
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .main-nav {
+            display: none;
+            gap: 28px;
+            margin-left: auto;
+        }
+
+        .main-nav a {
+            color: var(--muted);
+            font-size: 15px;
+            font-weight: 550;
             text-decoration: none;
         }
 
-        .brand img {
-            border-radius: 10px;
+        .main-nav a:hover {
+            color: var(--violet);
         }
 
-        .company-link {
-            color: var(--muted);
-            font-size: 14px;
-        }
-
-        .hero {
-            padding: 72px 0 56px;
-            text-align: center;
-        }
-
-        .app-icon {
-            display: block;
-            margin: 0 auto 24px;
-            border-radius: 28px;
-            box-shadow: 0 16px 36px rgba(124, 58, 237, 0.18);
-        }
-
-        .eyebrow {
-            margin: 0 0 12px;
-            color: #6426c7;
-            font-size: 14px;
-            font-weight: 700;
-        }
-
-        h1 {
-            margin: 0 0 20px;
-            font-size: clamp(32px, 5vw, 52px);
-            line-height: 1.3;
-            letter-spacing: -0.04em;
-        }
-
-        .hero-description {
-            max-width: 620px;
-            margin: 0 auto;
-            color: var(--muted);
-            font-size: 17px;
-        }
-
-        .downloads {
+        .header-actions {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 28px;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
         }
 
-        .store-link {
+        .lang-toggle {
+            display: inline-flex;
+            padding: 3px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: #fff;
+        }
+
+        .lang-toggle button {
+            min-width: 38px;
+            padding: 4px 9px;
+            border: 0;
+            border-radius: 999px;
+            background: transparent;
+            color: var(--subtle);
+            font: 650 12px/1.4 var(--font);
+            cursor: pointer;
+        }
+
+        .lang-toggle button[aria-pressed="true"] {
+            background: var(--ink);
+            color: #fff;
+        }
+
+        .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            min-width: 200px;
-            min-height: 54px;
-            padding: 12px 24px;
-            border: 1px solid var(--purple);
+            gap: 10px;
+            min-height: 44px;
+            padding: 10px 18px;
             border-radius: 12px;
-            background: var(--purple);
-            color: #fff;
-            font-weight: 700;
+            border: 1px solid transparent;
+            font: 650 15px/1.2 var(--font);
             text-decoration: none;
+            cursor: pointer;
+            transition: background .15s, transform .15s, box-shadow .15s;
         }
 
-        .store-link:hover {
-            background: #6426c7;
-            border-color: #6426c7;
+        .btn-primary {
+            background: var(--violet);
+            color: #fff;
         }
 
-        .store-link.secondary {
-            background: #fff;
-            color: #6426c7;
+        .btn-primary:hover {
+            background: var(--violet-600);
         }
 
-        .store-link.secondary:hover {
-            background: #f1eafe;
+        .btn-small {
+            min-height: 36px;
+            padding: 7px 14px;
+            font-size: 14px;
+            border-radius: 10px;
         }
 
-        .features {
-            padding-bottom: 48px;
+        .header-cta {
+            display: none;
         }
 
-        h2 {
-            margin: 0 0 24px;
-            font-size: 26px;
-            letter-spacing: -0.03em;
-        }
-
-        .features > h2 {
-            text-align: center;
-        }
-
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 16px;
-        }
-
-        .feature {
-            padding: 28px;
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            background: #fff;
-        }
-
-        .feature-number {
-            color: #6426c7;
-            font-size: 13px;
-            font-weight: 750;
-        }
-
-        h3 {
-            margin: 10px 0 8px;
-            font-size: 19px;
-        }
-
-        .feature p {
-            margin: 0;
-            color: var(--muted);
-        }
-
-        .notice {
-            margin: 20px 0 0;
-            color: var(--muted);
-            font-size: 13px;
-            text-align: center;
-        }
-
-        .about {
-            padding: 32px;
-            border-radius: 18px;
-            background: #f0e9fc;
-        }
-
-        .about h2 {
-            margin-bottom: 12px;
-            font-size: 22px;
-        }
-
-        .about p {
-            margin: 0 0 12px;
-        }
-
-        .about p:last-child {
-            margin-bottom: 0;
-        }
-
-        .site-footer {
+        /* ── Store buttons ── */
+        .stores {
             display: flex;
             flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .store {
+            display: inline-flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            margin-top: 48px;
-            padding-top: 24px;
-            padding-bottom: 32px;
-            border-top: 1px solid var(--border);
-            color: var(--muted);
+            gap: 12px;
+            min-width: 186px;
+            min-height: 58px;
+            padding: 10px 20px 10px 16px;
+            border-radius: 14px;
+            background: #111014;
+            color: #fff;
+            text-decoration: none;
+            transition: transform .15s var(--ease), box-shadow .15s;
+        }
+
+        .store:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(17, 16, 20, 0.22);
+        }
+
+        .store svg {
+            width: 26px;
+            height: 26px;
+            flex: none;
+        }
+
+        .store span {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.15;
+        }
+
+        .store small {
+            font-size: 11px;
+            opacity: .78;
+            font-weight: 500;
+        }
+
+        .store b {
+            font-size: 18px;
+            font-weight: 650;
+            letter-spacing: -0.01em;
+        }
+
+        .store.light {
+            background: #fff;
+            color: var(--ink);
+        }
+
+        .store-meta {
+            margin: 14px 0 0;
+            color: var(--subtle);
             font-size: 13px;
         }
 
-        .site-footer p {
+        /* ── Hero ── */
+        .hero {
+            position: relative;
+            overflow: hidden;
+            padding: 48px 0 72px;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: -20% -10% auto auto;
+            width: 760px;
+            height: 760px;
+            background: radial-gradient(closest-side, rgba(124, 58, 237, 0.16), rgba(124, 58, 237, 0));
+            pointer-events: none;
+        }
+
+        .hero-grid {
+            position: relative;
+            display: grid;
+            gap: 56px;
+            align-items: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(40px, 7.4vw, 68px);
+            font-weight: 800;
+            line-height: 1.12;
+            letter-spacing: -0.045em;
+        }
+
+        .hero h1 em {
+            font-style: normal;
+            color: var(--violet);
+        }
+
+        .hero .lead {
+            max-width: 520px;
+            margin: 22px 0 32px;
+            font-size: 18px;
+        }
+
+        /* ── Phone mockup ── */
+        .phone {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+            padding: 9px;
+            border-radius: 46px;
+            background: #17151B;
+            box-shadow: var(--shadow-pop), inset 0 0 0 2px #2D2A33;
+        }
+
+        .phone .screen {
+            position: relative;
+            overflow: hidden;
+            border-radius: 38px;
+            background: var(--bg);
+        }
+
+        .phone .statusbar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 30px;
+            background: var(--bg);
+        }
+
+        .phone .statusbar::before {
+            content: "";
+            width: 76px;
+            height: 20px;
+            border-radius: 999px;
+            background: #17151B;
+            margin-top: 6px;
+        }
+
+        .phone img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 585 / 1190;
+            object-fit: cover;
+            object-position: top;
+        }
+
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .float-card {
+            position: absolute;
+            padding: 12px 14px;
+            border-radius: 14px;
+            background: #fff;
+            box-shadow: var(--shadow-pop);
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.4;
+            animation: floaty 6s ease-in-out infinite;
+        }
+
+        .float-card .num {
+            display: block;
+            margin-top: 2px;
+            color: var(--ink);
+            font-size: 17px;
+        }
+
+        .float-card.a {
+            left: max(0px, calc(50% - 250px));
+            top: 26%;
+        }
+
+        .float-card.b {
+            right: max(0px, calc(50% - 250px));
+            bottom: 14%;
+            animation-delay: -3s;
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: var(--violet);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 650;
+            line-height: 1.4;
+            white-space: nowrap;
+        }
+
+        .pill.coral {
+            background: var(--coral);
+        }
+
+        @keyframes floaty {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        /* ── Problem ── */
+        .problem {
+            background: #fff;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .problem-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .p-card {
+            padding: 28px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: var(--bg);
+        }
+
+        .p-card .idx {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            margin-bottom: 18px;
+            border-radius: 10px;
+            background: var(--violet-100);
+            color: var(--violet-700);
+            font-size: 15px;
+        }
+
+        .p-card p {
+            margin: 10px 0 0;
+            color: var(--muted);
+        }
+
+        .tokens {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 16px;
+        }
+
+        .tokens>span {
+            padding: 4px 10px;
+            border-radius: 8px;
+            border: 1px dashed var(--violet-200);
+            background: #fff;
+            color: var(--violet-700);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* ── Compare demo ── */
+        .compare {
+            position: relative;
+            overflow: hidden;
+            background: var(--violet-900);
+            color: #fff;
+        }
+
+        .compare::before {
+            content: "";
+            position: absolute;
+            inset: auto auto -30% -20%;
+            width: 900px;
+            height: 900px;
+            background: radial-gradient(closest-side, rgba(124, 58, 237, 0.55), rgba(124, 58, 237, 0));
+            pointer-events: none;
+        }
+
+        .compare .wrap {
+            position: relative;
+        }
+
+        .compare .kicker {
+            color: var(--violet-200);
+        }
+
+        .compare .lead {
+            color: rgba(255, 255, 255, 0.72);
+        }
+
+        .compare-grid {
+            display: grid;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .demo {
+            padding: 20px;
+            border-radius: 24px;
+            background: var(--bg);
+            color: var(--ink);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+        }
+
+        .demo-top {
+            padding: 6px 4px 18px;
+            text-align: center;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .demo-top .label {
+            color: var(--violet);
+            font-size: 14px;
+            font-weight: 650;
+        }
+
+        .demo-top .avg {
+            display: block;
+            margin-top: 2px;
+            font-size: clamp(24px, 4vw, 30px);
+        }
+
+        .demo-top .meta {
+            display: block;
+            margin-top: 4px;
+            color: var(--subtle);
+            font-size: 12px;
+        }
+
+        .seg {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+            margin: 18px 0;
+            padding: 4px;
+            border-radius: 12px;
+            background: var(--violet-50);
+        }
+
+        .seg button {
+            padding: 10px 8px;
+            border: 0;
+            border-radius: 9px;
+            background: transparent;
+            color: var(--muted);
+            font: 650 14px/1.3 var(--font);
+            cursor: pointer;
+            transition: background .2s, color .2s, box-shadow .2s;
+        }
+
+        .seg button[aria-pressed="true"] {
+            background: #fff;
+            color: var(--violet-700);
+            box-shadow: 0 2px 8px rgba(60, 30, 120, 0.12);
+        }
+
+        .demo-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .clinic {
+            position: relative;
+            overflow: hidden;
+            padding: 18px 18px 16px;
+            border-radius: var(--radius);
+            background: var(--card);
+            box-shadow: var(--shadow-card);
+            will-change: transform;
+        }
+
+        .clinic .row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .clinic .rank {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            margin-right: 8px;
+            border-radius: 6px;
+            background: var(--ink);
+            color: #fff;
+            font-size: 12px;
+            vertical-align: 2px;
+        }
+
+        .clinic .name {
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .clinic .pack {
+            color: var(--subtle);
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .clinic hr {
+            margin: 12px 0;
+            border: 0;
+            border-top: 1px solid var(--line);
+        }
+
+        .clinic .price {
+            color: var(--violet);
+            font-size: 26px;
+            line-height: 1.1;
+        }
+
+        .clinic .price small {
+            margin-left: 4px;
+            color: var(--subtle);
+            font: 500 12px var(--font);
+        }
+
+        .clinic .calc {
+            margin-top: 6px;
+            color: var(--subtle);
+            font-size: 12.5px;
+        }
+
+        .bar {
+            position: relative;
+            height: 8px;
+            margin-top: 14px;
+            border-radius: 999px;
+            background: var(--violet-50);
+        }
+
+        .bar i {
+            position: absolute;
+            inset: 0 auto 0 0;
+            border-radius: inherit;
+            background: var(--violet);
+            transition: width .7s var(--ease);
+        }
+
+        .bar .avg-mark {
+            position: absolute;
+            top: -5px;
+            bottom: -5px;
+            width: 2px;
+            border-radius: 2px;
+            background: var(--ink);
+            opacity: 0;
+            transition: opacity .4s, left .7s var(--ease);
+        }
+
+        .ribbon {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 74px;
+            height: 74px;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .ribbon>span {
+            position: absolute;
+            top: 14px;
+            right: -26px;
+            width: 110px;
+            padding: 3px 0;
+            transform: rotate(45deg);
+            background: var(--violet);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 650;
+            text-align: center;
+        }
+
+        /* mode별 표시 */
+        .demo [data-show] {
+            display: none;
+        }
+
+        .demo[data-mode="total"] [data-show="total"],
+        .demo[data-mode="unit"] [data-show="unit"] {
+            display: revert;
+        }
+
+        .demo[data-mode="unit"] .avg-mark {
+            opacity: 1;
+        }
+
+        .verdict {
+            margin: 16px 2px 2px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            background: var(--violet-50);
+            color: var(--violet-900);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .demo-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 16px;
+            margin-top: 14px;
+            padding: 0 2px;
+            color: var(--subtle);
+            font-size: 12px;
+        }
+
+        .demo-legend span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .compare-copy h2 em {
+            font-style: normal;
+            color: #C9B0FF;
+        }
+
+        .steps {
+            display: grid;
+            gap: 14px;
+            margin: 32px 0 0;
+            padding: 0;
+            list-style: none;
+            counter-reset: s;
+        }
+
+        .steps li {
+            position: relative;
+            padding: 16px 18px 16px 58px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.04);
+            color: rgba(255, 255, 255, 0.82);
+            font-size: 15px;
+        }
+
+        .steps li::before {
+            counter-increment: s;
+            content: counter(s);
+            position: absolute;
+            left: 18px;
+            top: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            background: var(--violet);
+            color: #fff;
+            font: 800 13px/1 var(--num);
+        }
+
+        .steps b {
+            color: #fff;
+        }
+
+        .examples {
+            display: grid;
+            gap: 12px;
+            margin-top: 48px;
+        }
+
+        .ex {
+            padding: 18px 20px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .ex .t {
+            color: rgba(255, 255, 255, 0.66);
+            font-size: 13px;
+        }
+
+        .ex .num {
+            display: block;
+            margin-top: 4px;
+            font-size: 22px;
+            color: #fff;
+        }
+
+        .footnote {
+            margin: 14px 0 0;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 12px;
+        }
+
+        /* ── Features ── */
+        .feature-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .f-card {
+            padding: 26px;
+            border-radius: var(--radius);
+            background: #fff;
+            border: 1px solid var(--line);
+        }
+
+        .f-card .ico {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            margin-bottom: 18px;
+            border-radius: 12px;
+            background: var(--violet-100);
+            color: var(--violet);
+        }
+
+        .f-card .ico svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .f-card p {
+            margin: 8px 0 0;
+            color: var(--muted);
+            font-size: 15px;
+        }
+
+        .f-card .new {
+            margin-left: 6px;
+            padding: 2px 7px;
+            border-radius: 6px;
+            background: var(--violet);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            vertical-align: 3px;
+            letter-spacing: 0;
+        }
+
+        .f-card a {
+            display: inline-block;
+            margin-top: 12px;
+            font-size: 14px;
+            font-weight: 650;
+        }
+
+        .f-card.key {
+            background: var(--violet);
+            border-color: var(--violet);
+            color: #fff;
+        }
+
+        .f-card.key p {
+            color: rgba(255, 255, 255, 0.84);
+        }
+
+        .f-card.key .ico {
+            background: rgba(255, 255, 255, 0.16);
+            color: #fff;
+        }
+
+        .gallery {
+            display: grid;
+            grid-auto-flow: column;
+            grid-auto-columns: minmax(220px, 260px);
+            gap: 24px;
+            margin: 56px -20px 0;
+            padding: 8px 20px 28px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .gallery figure {
+            margin: 0;
+            scroll-snap-align: center;
+        }
+
+        .gallery .phone {
+            max-width: none;
+            box-shadow: 0 18px 40px rgba(60, 30, 120, 0.16), inset 0 0 0 2px #2D2A33;
+        }
+
+        .gallery figcaption {
+            margin-top: 16px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .gallery figcaption b {
+            display: block;
+            color: var(--ink);
+            font-size: 15px;
+        }
+
+        /* ── Regions ── */
+        .regions {
+            background: #fff;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .region-box {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 28px;
+            border: 1px solid #CAC4D0;
+            border-radius: 20px;
+            background: var(--bg);
+        }
+
+        .region-box h3 {
+            font-size: 15px;
+            font-weight: 650;
+            color: var(--muted);
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 10px;
+            border: 1.5px solid #79747E;
+            background: #fff;
+            color: var(--ink);
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .chip.on {
+            border-color: var(--violet);
+            background: var(--violet);
+            color: #fff;
+        }
+
+        .chip.on::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #7CF0B0;
+        }
+
+        .chip.soon {
+            border-style: dashed;
+            border-color: #CAC4D0;
+            background: transparent;
+            color: var(--subtle);
+            font-weight: 550;
+        }
+
+        .region-row+.region-row {
+            margin-top: 22px;
+            padding-top: 22px;
+            border-top: 1px solid var(--line);
+        }
+
+        .region-note {
+            margin: 18px 0 0;
+            text-align: center;
+            color: var(--subtle);
+            font-size: 14px;
+        }
+
+        /* ── Team ── */
+        .team-card {
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            gap: 28px;
+            padding: 40px 28px;
+            border-radius: 24px;
+            background: #141016 url("assets/paw-bg.jpg") center 40% / cover no-repeat;
+            color: #fff;
+        }
+
+        .team-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(110deg, rgba(20, 16, 22, 0.94) 30%, rgba(20, 16, 22, 0.6));
+        }
+
+        .team-card>* {
+            position: relative;
+        }
+
+        .team-card .kicker {
+            color: #C9B0FF;
+        }
+
+        .team-card p {
+            margin: 14px 0 0;
+            color: rgba(255, 255, 255, 0.78);
+        }
+
+        .team-card .slogan {
+            font-size: 15px;
+            letter-spacing: 0.04em;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+        }
+
+        .facts {
+            display: grid;
+            gap: 0;
+            margin: 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.14);
+        }
+
+        .facts div {
+            display: grid;
+            grid-template-columns: 96px 1fr;
+            gap: 12px;
+            padding: 13px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+            font-size: 15px;
+        }
+
+        .facts dt {
+            color: rgba(255, 255, 255, 0.55);
+        }
+
+        .facts dd {
+            margin: 0;
+        }
+
+        .facts a {
+            color: #fff;
+        }
+
+        /* ── CTA band ── */
+        .cta {
+            padding: 0 0 88px;
+        }
+
+        .cta-box {
+            display: grid;
+            gap: 32px;
+            align-items: center;
+            padding: 44px 28px;
+            border-radius: 28px;
+            background: var(--violet);
+            color: #fff;
+            text-align: center;
+        }
+
+        .cta-box .logo-mark {
+            height: 34px;
+            margin: 0 auto;
+            color: #fff;
+        }
+
+        .cta-box h2 {
+            margin-top: 22px;
+            font-size: clamp(26px, 4vw, 36px);
+        }
+
+        .cta-box p {
+            margin: 10px 0 0;
+            color: rgba(255, 255, 255, 0.82);
+        }
+
+        .cta-box .stores {
+            justify-content: center;
+        }
+
+        /* ── Footer ── */
+        .site-footer {
+            padding: 36px 0 48px;
+            border-top: 1px solid var(--line);
+            color: var(--subtle);
+            font-size: 13px;
+        }
+
+        .disclaimer {
+            margin: 0 0 22px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: #fff;
+            border: 1px solid var(--line);
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .footer-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 14px 24px;
+        }
+
+        .footer-row p {
             margin: 0;
         }
 
         .footer-links {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 8px 20px;
         }
 
-        @media (max-width: 600px) {
-            .page {
-                padding-right: 20px;
-                padding-left: 20px;
+        .footer-links a {
+            color: var(--muted);
+        }
+
+        /* ── Reveal ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity .7s var(--ease), transform .7s var(--ease);
+        }
+
+        .reveal.in {
+            opacity: 1;
+            transform: none;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
             }
 
-            .hero {
-                padding-top: 48px;
+            .reveal {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+
+            .float-card {
+                animation: none;
+            }
+
+            .bar i,
+            .bar .avg-mark,
+            .clinic {
+                transition: none !important;
+            }
+        }
+
+        /* ── ≥ 720px ── */
+        @media (min-width: 720px) {
+            .wrap {
+                padding: 0 32px;
+            }
+
+            .header-cta {
+                display: inline-flex;
+            }
+
+            .problem-grid {
+                grid-template-columns: repeat(3, 1fr);
             }
 
             .feature-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
             }
 
-            .feature,
-            .about {
-                padding: 24px;
+            .examples {
+                grid-template-columns: repeat(3, 1fr);
             }
 
-            .store-link {
-                width: 100%;
+            .gallery {
+                grid-auto-flow: initial;
+                grid-template-columns: repeat(3, 1fr);
+                margin: 64px 0 0;
+                padding: 8px 0 0;
+                overflow: visible;
+            }
+
+            .team-card {
+                grid-template-columns: 1.2fr 1fr;
+                padding: 56px;
+                align-items: end;
+            }
+
+            .cta-box {
+                padding: 64px 56px;
+            }
+        }
+
+        /* ── ≥ 1000px ── */
+        @media (min-width: 1000px) {
+            .main-nav {
+                display: flex;
+            }
+
+            .header-actions {
+                margin-left: 8px;
+            }
+
+            .hero {
+                padding: 72px 0 104px;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1.1fr 0.9fr;
+            }
+
+            .phone {
+                max-width: 320px;
+            }
+
+            .float-card.a {
+                left: calc(50% - 290px);
+                top: 30%;
+            }
+
+            .float-card.b {
+                right: calc(50% - 280px);
+            }
+
+            .compare-grid {
+                grid-template-columns: 1fr 440px;
+                gap: 72px;
+            }
+
+            .feature-grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
+
+            .feature-grid .f-card {
+                grid-column: span 2;
+            }
+
+            .feature-grid .f-card.key {
+                grid-column: span 4;
+            }
+
+            .section {
+                padding: 112px 0;
+            }
+
+            .cta-box {
+                grid-template-columns: 1fr auto;
+                text-align: left;
+            }
+
+            .cta-box .logo-mark {
+                margin: 0;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .brand .divider,
+            .brand .name {
+                display: none;
+            }
+
+            .store {
+                flex: 1 1 100%;
+            }
+
+            .float-card {
+                font-size: 11px;
+                padding: 10px 12px;
+            }
+
+            .float-card .num {
+                font-size: 15px;
+            }
+
+            .float-card.a {
+                left: -4px;
+            }
+
+            .float-card.b {
+                right: -4px;
             }
         }
     </style>
 </head>
 
 <body>
-    <header class="site-header page">
-        <a class="brand" href="./" aria-label="Mimoshot home">
-            <img src="assets/app_icon.png" width="36" height="36" alt="">
-            Mimoshot
-        </a>
-        <a class="company-link" href="../index.html">Paw Fighters</a>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+            <symbol id="mimoshot-logo" viewBox="108 400 826 226">
+                <path fill="currentColor" fill-rule="evenodd"
+                    d="M132 408h198a20 20 0 0 1 20 20v167a20 20 0 0 1-20 20H132a20 20 0 0 1-20-20V428a20 20 0 0 1 20-20zM156 446v132h151V446zM412 408h198a20 20 0 0 1 20 20v167a20 20 0 0 1-20 20H412a20 20 0 0 1-20-20V428a20 20 0 0 1 20-20zM436 446v132h151V446z" />
+                <path d="M680 598L792 428L905 598" fill="none" stroke="currentColor" stroke-width="44"
+                    stroke-linecap="round" stroke-linejoin="round" />
+            </symbol>
+            <symbol id="i-apple" viewBox="0 0 24 24">
+                <path fill="currentColor"
+                    d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701" />
+            </symbol>
+            <symbol id="i-play" viewBox="0 0 24 24">
+                <path fill="currentColor"
+                    d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z" />
+            </symbol>
+        </defs>
+    </svg>
+
+    <!-- Header -->
+    <header class="site-header" id="top">
+        <div class="wrap">
+            <a class="brand" href="index.html" aria-label="미모샷 Mimoshot">
+                <svg class="logo-mark" viewBox="0 0 826 226" role="img" aria-hidden="true">
+                    <use href="#mimoshot-logo" />
+                </svg>
+                <span class="divider" aria-hidden="true"></span>
+                <span class="name"><span class="ko">미모샷</span><span class="en">Mimoshot</span></span>
+            </a>
+            <nav class="main-nav" aria-label="페이지 내 이동">
+                <a href="#compare"><span class="ko">단가 비교</span><span class="en">Unit pricing</span></a>
+                <a href="#features"><span class="ko">기능</span><span class="en">Features</span></a>
+                <a href="#regions"><span class="ko">서비스 지역</span><span class="en">Regions</span></a>
+                <a href="#team"><span class="ko">만든 팀</span><span class="en">Team</span></a>
+            </nav>
+            <div class="header-actions">
+                <div class="lang-toggle" role="group" aria-label="Language">
+                    <button type="button" data-set-lang="ko" aria-pressed="true">KO</button>
+                    <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+                </div>
+                <a class="btn btn-primary btn-small header-cta" href="#download"><span class="ko">앱 다운로드</span><span
+                        class="en">Get the app</span></a>
+            </div>
+        </div>
     </header>
 
-    <main class="page">
-        <section class="hero" aria-labelledby="intro-title">
-            <img class="app-icon" src="assets/app_icon.png" width="112" height="112" alt="Mimoshot app logo">
-            <p class="eyebrow">Mimoshot</p>
-            <h1 id="intro-title">Aesthetic treatment prices,<br>all in one place.</h1>
-            <p class="hero-description">
-                Stop checking every clinic website.<br>
-                Mimoshot brings local treatment prices together<br>
-                so you can compare your options and make smarter choices.
-            </p>
-            <div class="downloads" aria-label="Download the app">
-                <a class="store-link" href="https://play.google.com/store/apps/details?id=com.pawfighters.mimoshot">
-                    Get it on Google Play
-                </a>
-                <a class="store-link secondary" href="https://apps.apple.com/kr/app/%EB%AF%B8%EB%AA%A8%EC%83%B7-%ED%94%BC%EB%B6%80%EA%B3%BC-%EC%8B%9C%EC%88%A0-%EA%B0%80%EA%B2%A9%EB%B9%84%EA%B5%90-%EA%B0%95%EB%82%A8%EC%97%AD-%EC%B5%9C%EC%A0%80%EA%B0%80-%EA%B2%80%EC%83%89/id6760410241">
-                    Download on the App Store
-                </a>
+    <main>
+        <!-- Hero -->
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="wrap hero-grid">
+                <div>
+                    <p class="eyebrow"><span class="ko">한눈에 보는 피부과 가격비교</span><span class="en">K-clinic price
+                            comparison</span></p>
+                    <h1 id="hero-title">
+                        <span class="ko">피부과 가격,<br>총액 말고 <em>단가</em>로.</span>
+                        <span class="en">Clinic prices,<br>by the <em>unit</em>,<br>not the total.</span>
+                    </h1>
+                    <p class="lead">
+                        <span class="ko">병원마다 다른 패키지 구성을 cc·샷·유닛 단위 가격으로 환산하고, 지역 평균과 나란히 비교해 드려요.</span>
+                        <span class="en">Every clinic packages treatments differently. Mimoshot converts each offer
+                            into a price per cc, shot, or unit, and shows it next to the local average.</span>
+                    </p>
+                    <div class="stores" id="download">
+                        <a class="store" href="https://apps.apple.com/kr/app/id6760410241" rel="noopener">
+                            <svg aria-hidden="true">
+                                <use href="#i-apple" />
+                            </svg>
+                            <span><small>Download on the</small><b>App Store</b></span>
+                        </a>
+                        <a class="store" href="https://play.google.com/store/apps/details?id=com.pawfighters.mimoshot"
+                            rel="noopener">
+                            <svg aria-hidden="true">
+                                <use href="#i-play" />
+                            </svg>
+                            <span><small>GET IT ON</small><b>Google Play</b></span>
+                        </a>
+                    </div>
+                    <p class="store-meta"><span class="ko">iOS · Android 무료</span><span class="en">Free on iOS and
+                            Android</span></p>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="phone">
+                        <div class="screen">
+                            <div class="statusbar"></div>
+                            <img class="ko" src="assets/screens/results-rejuran-event-ko.webp" width="585"
+                                height="1190" alt="미모샷 검색 결과 화면: 리쥬란힐러 강남역 평균 가격과 병원별 단가, 평균 대비 비율, 이벤트 리본">
+                            <img class="en" src="assets/screens/results-rejuran-en.webp" width="720" height="1465"
+                                alt="Mimoshot search results: Rejuran Healer average price in Gangnam Station, per-unit prices, percentage versus average, and promo ribbons">
+                        </div>
+                    </div>
+                    <div class="float-card a" aria-hidden="true">
+                        <span class="ko">4cc × 3회 · 총 52만원</span><span class="en">4 mL × 3 · ₩520,000</span>
+                        <span class="num">₩86,667/<span class="ko">2cc</span><span class="en">2 mL</span></span>
+                    </div>
+                    <div class="float-card b" aria-hidden="true">
+                        <span class="pill"><span class="ko">평균 대비 -63.0%</span><span class="en">-63.0% vs
+                                avg</span></span>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <section class="features" aria-labelledby="features-title">
-            <h2 id="features-title">Compare easily. Choose wisely.</h2>
-            <div class="feature-grid">
-                <article class="feature">
-                    <span class="feature-number">01 / Price comparison</span>
-                    <h3>Compare clinics on one screen</h3>
-                    <p>See treatment prices from clinics around Gangnam Station and other supported areas, without visiting each clinic's website.</p>
-                </article>
-                <article class="feature">
-                    <span class="feature-number">02 / Per-unit pricing</span>
-                    <h3>Compare prices on equal terms</h3>
-                    <p>Sort by per-unit prices, such as Rejuran Healer per 1cc, and check average and lowest rates to find a fair price benchmark.</p>
-                </article>
-                <article class="feature">
-                    <span class="feature-number">03 / Treatment search</span>
-                    <h3>Find clinics offering your treatment</h3>
-                    <p>Search for Botox, fillers, lasers, lifting, and more to find clinics that offer the treatment you're interested in.</p>
-                </article>
-                <article class="feature">
-                    <span class="feature-number">04 / Promotional prices</span>
-                    <h3>See regular and promotional rates</h3>
-                    <p>View standard prices alongside promotional offers, so you can compare deals for the same treatment at a glance.</p>
-                </article>
+        <!-- Problem -->
+        <section class="section problem" aria-labelledby="problem-title">
+            <div class="wrap">
+                <div class="section-head">
+                    <p class="kicker"><span class="ko">왜 미모샷인가요</span><span class="en">Why Mimoshot</span></p>
+                    <h2 id="problem-title">
+                        <span class="ko">병원 홈페이지 10곳을 돌아도<br>비교가 안 되는 이유</span>
+                        <span class="en">Ten clinic websites later,<br>you still can't compare.</span>
+                    </h2>
+                </div>
+                <div class="problem-grid">
+                    <article class="p-card reveal">
+                        <span class="idx num">1</span>
+                        <h3><span class="ko">가격이 흩어져 있어요</span><span class="en">Prices are scattered</span></h3>
+                        <p>
+                            <span class="ko">병원마다 홈페이지와 이벤트 페이지가 따로 있고, 전화로 물어봐야 알 수 있는 곳도 많아요.</span>
+                            <span class="en">Each clinic has its own website and promo pages, and some only share
+                                prices over the phone.</span>
+                        </p>
+                    </article>
+                    <article class="p-card reveal">
+                        <span class="idx num">2</span>
+                        <h3><span class="ko">구성이 제각각이에요</span><span class="en">Packages don't match</span></h3>
+                        <p>
+                            <span class="ko">같은 시술도 병원마다 용량과 횟수가 달라서 나란히 놓고 비교하기 어려워요.</span>
+                            <span class="en">The same treatment comes in different volumes and session counts, so
+                                offers can't be lined up side by side.</span>
+                        </p>
+                        <div class="tokens" aria-hidden="true">
+                            <span>4cc × 3</span><span>2cc × 1</span><span>300<span class="ko">샷</span><span
+                                    class="en"> shots</span></span><span>50<span class="ko">유닛</span><span class="en">
+                                    units</span></span>
+                        </div>
+                    </article>
+                    <article class="p-card reveal">
+                        <span class="idx num">3</span>
+                        <h3><span class="ko">총액은 착시를 만들어요</span><span class="en">Totals are misleading</span></h3>
+                        <p>
+                            <span class="ko">싸 보이는 가격이 단위로 나눠 보면 더 비쌀 수 있어요. 반대로 비싸 보이던 패키지가 가장 합리적일 때도 있고요.</span>
+                            <span class="en">A low sticker price can cost more per unit, and a pricey-looking
+                                package can be the better deal.</span>
+                        </p>
+                    </article>
+                </div>
             </div>
-            <p class="notice">Prices and promotional terms may change. Confirm the final price and conditions with the clinic before treatment.</p>
         </section>
 
-        <section class="about" aria-labelledby="about-title">
-            <h2 id="about-title">Mimoshot, made by Paw Fighters</h2>
-            <p>Mimoshot is an aesthetic treatment price comparison app developed and provided by <strong>Paw Fighters LC.</strong> We make it easier to find and compare the information you need.</p>
-            <p>Questions or feedback: <a href="mailto:byang@pawfighters.com">byang@pawfighters.com</a></p>
-            <p>Learn how your information is collected and used in our <a href="privacy-policy.html">Privacy Policy</a>.</p>
+        <!-- Compare demo -->
+        <section class="section compare" id="compare" aria-labelledby="compare-title">
+            <div class="wrap compare-grid">
+                <div class="compare-copy">
+                    <p class="kicker"><span class="ko">단가 비교</span><span class="en">Unit pricing</span></p>
+                    <h2 id="compare-title">
+                        <span class="ko">총액이 5배 비싼 곳이<br><em>단가로는 더 저렴</em>합니다.</span>
+                        <span class="en">The clinic that costs 5× more<br>is <em>cheaper per unit.</em></span>
+                    </h2>
+                    <p class="lead">
+                        <span class="ko">미모샷 앱의 실제 가격 데이터로 만든 예시예요. 총액순과 단가순을 바꿔 보세요.</span>
+                        <span class="en">An example built from real price data in the app. Switch between total
+                            price and unit price.</span>
+                    </p>
+                    <ol class="steps">
+                        <li>
+                            <span class="ko"><b>같은 단위로 환산</b> — 4cc × 3회 패키지도, 2cc × 1회 이벤트도 모두 2cc당 가격으로 바꿔요.</span>
+                            <span class="en"><b>Normalize the unit.</b> A 4 mL × 3 package and a 2 mL × 1 promo
+                                both become a price per 2 mL.</span>
+                        </li>
+                        <li>
+                            <span class="ko"><b>지역 평균과 비교</b> — 같은 지역 같은 시술의 평균 단가를 기준선으로 보여줘요.</span>
+                            <span class="en"><b>Compare with the local average.</b> The average unit price for the
+                                same treatment and area becomes the baseline.</span>
+                        </li>
+                        <li>
+                            <span class="ko"><b>평균 대비 ±%로 표시</b> — 평균보다 낮으면 보라, 높으면 빨강 배지로 바로 알 수 있어요.</span>
+                            <span class="en"><b>Show ±% vs average.</b> Purple badges mark below-average prices, red
+                                badges mark above-average ones.</span>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="demo reveal" id="demo" data-mode="total">
+                    <div class="demo-top">
+                        <span class="label"><span class="ko">리쥬란힐러 강남역 평균 가격</span><span class="en">Rejuran
+                                Healer · Gangnam Station average</span></span>
+                        <span class="avg num">₩234,387/<span class="ko">2cc</span><span class="en">2 mL</span></span>
+                        <span class="meta"><span class="ko">검색결과 179개 기준 · 병원명은 가명입니다</span><span class="en">Based
+                                on 179 results · clinic names are placeholders</span></span>
+                    </div>
+
+                    <div class="seg" role="group" aria-label="정렬 기준 / Sort by">
+                        <button type="button" data-mode="total" aria-pressed="true"><span class="ko">총액으로 보기</span><span
+                                class="en">By total</span></button>
+                        <button type="button" data-mode="unit" aria-pressed="false"><span class="ko">단가로 보기</span><span
+                                class="en">By unit price</span></button>
+                    </div>
+
+                    <div class="demo-list">
+                        <article class="clinic" data-id="a" data-total="520000" data-unit="86667">
+                            <div class="row">
+                                <span class="name"><span class="rank num">2</span><span class="ko">A의원</span><span
+                                        class="en">Clinic A</span></span>
+                                <span class="pack"><span class="ko">4cc × 3회</span><span class="en">4 mL × 3
+                                        sessions</span></span>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <span class="price num">
+                                    <span data-show="total"><span class="ko">52만원</span><span
+                                            class="en">₩520,000</span><small><span class="ko">VAT 포함</span><span
+                                                class="en">incl. VAT</span></small></span>
+                                    <span data-show="unit">₩86,667<small>/<span class="ko">2cc</span><span class="en">2 mL</span></small></span>
+                                </span>
+                                <span data-show="unit" class="pill"><span class="ko">평균 대비 -63.0%</span><span
+                                        class="en">-63.0% vs avg</span></span>
+                            </div>
+                            <div class="calc" data-show="unit"><span class="ko">52만원 ÷ 12cc × 2cc</span><span
+                                    class="en">₩520,000 ÷ 12 mL × 2 mL</span></div>
+                            <div class="bar" aria-hidden="true"><i></i><span class="avg-mark"></span></div>
+                        </article>
+
+                        <article class="clinic" data-id="b" data-total="99000" data-unit="99000">
+                            <div class="ribbon" aria-hidden="true"><span><span class="ko">이벤트</span><span
+                                        class="en">Promo</span></span></div>
+                            <div class="row">
+                                <span class="name"><span class="rank num">1</span><span class="ko">B의원</span><span
+                                        class="en">Clinic B</span></span>
+                                <span class="pack" style="margin-right:34px"><span class="ko">2cc × 1회</span><span
+                                        class="en">2 mL × 1 session</span></span>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <span class="price num">
+                                    <span data-show="total"><span class="ko">9.9만원</span><span
+                                            class="en">₩99,000</span><small><span class="ko">VAT 포함</span><span
+                                                class="en">incl. VAT</span></small></span>
+                                    <span data-show="unit">₩99,000<small>/<span class="ko">2cc</span><span class="en">2 mL</span></small></span>
+                                </span>
+                                <span data-show="unit" class="pill"><span class="ko">평균 대비 -57.8%</span><span
+                                        class="en">-57.8% vs avg</span></span>
+                            </div>
+                            <div class="calc" data-show="unit"><span class="ko">9.9만원 ÷ 2cc × 2cc</span><span
+                                    class="en">₩99,000 ÷ 2 mL × 2 mL</span></div>
+                            <div class="bar" aria-hidden="true"><i></i><span class="avg-mark"></span></div>
+                        </article>
+                    </div>
+
+                    <p class="verdict" aria-live="polite">
+                        <span data-show="total"><span class="ko">총액만 보면 B의원이 5배 넘게 저렴해 보여요.</span><span
+                                class="en">By total price, Clinic B looks over 5× cheaper.</span></span>
+                        <span data-show="unit"><span class="ko">같은 2cc로 환산하면 A의원이 더 저렴해요.</span><span
+                                class="en">Per 2 mL, Clinic A is actually the cheaper option.</span></span>
+                    </p>
+                    <div class="demo-legend">
+                        <span><span class="pill">-%</span><span class="ko">평균보다 저렴</span><span class="en">Below
+                                average</span></span>
+                        <span><span class="pill coral">+%</span><span class="ko">평균보다 비쌈</span><span
+                                class="en">Above average</span></span>
+                        <span data-show="unit"><i
+                                style="display:inline-block;width:2px;height:12px;margin-right:6px;vertical-align:-1px;background:var(--ink);border-radius:2px"></i><span
+                                class="ko">지역 평균</span><span class="en">Local average</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="wrap">
+                <div class="examples">
+                    <div class="ex reveal">
+                        <span class="t"><span class="ko">리쥬란힐러 · 평균 단가</span><span class="en">Rejuran Healer · avg
+                                unit price</span></span>
+                        <span class="num">₩234,387/<span class="ko">2cc</span><span class="en">2 mL</span></span>
+                    </div>
+                    <div class="ex reveal">
+                        <span class="t"><span class="ko">사각턱 보톡스 · 평균 단가</span><span class="en">Jaw Botox · avg unit
+                                price</span></span>
+                        <span class="num"><span class="ko">₩90,906/50유닛</span><span class="en">₩90,906/50
+                                units</span></span>
+                    </div>
+                    <div class="ex reveal">
+                        <span class="t"><span class="ko">써마지 · 평균 단가</span><span class="en">Thermage · avg unit
+                                price</span></span>
+                        <span class="num"><span class="ko">₩2,329,759/600샷</span><span class="en">₩2,329,759/600
+                                shots</span></span>
+                    </div>
+                </div>
+                <p class="footnote"><span class="ko">앱에 표시된 지역 평균 단가 예시입니다. 평균가는 수집 시점과 지역에 따라 달라집니다.</span><span
+                        class="en">Examples of local average unit prices shown in the app. Averages vary by area and
+                        over time.</span></p>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="section" id="features" aria-labelledby="features-title">
+            <div class="wrap">
+                <div class="section-head">
+                    <p class="kicker"><span class="ko">주요 기능</span><span class="en">Features</span></p>
+                    <h2 id="features-title"><span class="ko">가격 비교에 필요한 것만,<br>한 화면에.</span><span class="en">Everything
+                            you need to compare,<br>on one screen.</span></h2>
+                </div>
+
+                <div class="feature-grid">
+                    <article class="f-card key reveal">
+                        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M4 19V5M4 19h16M8 15l3-4 3 2 5-6" />
+                            </svg></span>
+                        <h3><span class="ko">단위당 가격 환산</span><span class="en">Per-unit price normalization</span></h3>
+                        <p>
+                            <span class="ko">cc·샷·유닛·회 기준 단가와 지역 평균가를 보여주고, 병원마다 "평균 대비 ±%"를 표시해요. 패키지 구성이 달라도 같은 기준으로 비교할 수 있어요.</span>
+                            <span class="en">See prices per cc, shot, unit, or session alongside the local average,
+                                with a "±% vs average" badge for every clinic. Different packages, one yardstick.</span>
+                        </p>
+                    </article>
+                    <article class="f-card reveal">
+                        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z" />
+                                <circle cx="12" cy="9.5" r="2.5" />
+                            </svg></span>
+                        <h3><span class="ko">지역별 한 화면 비교</span><span class="en">Compare by area</span></h3>
+                        <p><span class="ko">지역을 고르면 그 지역 피부과들의 시술 가격을 한 화면에 모아 보여줘요.</span><span
+                                class="en">Pick an area and see treatment prices from its clinics on a single
+                                screen.</span></p>
+                    </article>
+                    <article class="f-card reveal">
+                        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="11" cy="11" r="7" />
+                                <path d="M20 20l-3.5-3.5" />
+                            </svg></span>
+                        <h3><span class="ko">시술명 검색·자동완성</span><span class="en">Search with autocomplete</span></h3>
+                        <p><span class="ko">실시간 검색량 순위와 인기 급상승 시술을 보면서 원하는 시술을 바로 찾아요.</span><span
+                                class="en">Find treatments fast, with live search rankings and trending
+                                treatments.</span></p>
+                    </article>
+                    <article class="f-card reveal">
+                        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z" />
+                                <circle cx="7.5" cy="7.5" r="1.5" />
+                            </svg></span>
+                        <h3><span class="ko">정상가와 이벤트가</span><span class="en">Regular and promo prices</span></h3>
+                        <p><span class="ko">이벤트 리본으로 할인 가격을 구분하고, 정상가와 함께 확인해요.</span><span
+                                class="en">Promo ribbons flag discounted offers, shown together with regular
+                                prices.</span></p>
+                    </article>
+                    <article class="f-card reveal">
+                        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5v14z" />
+                                <path d="M8 7h8M8 11h6" />
+                            </svg></span>
+                        <h3><span class="ko">시술 소개</span><span class="en">Treatment guides</span><span
+                                class="new">NEW</span></h3>
+                        <p><span class="ko">낯선 시술명도 앱 안에서 바로 알아볼 수 있어요.</span><span class="en">Look up
+                                unfamiliar treatments without leaving the app.</span></p>
+                        <a class="ko" href="treatments-introduction/home.html">시술 소개 둘러보기 →</a>
+                    </article>
+                </div>
+
+                <div class="gallery" aria-label="앱 화면">
+                    <figure class="reveal">
+                        <div class="phone">
+                            <div class="screen">
+                                <div class="statusbar"></div>
+                                <img class="ko" src="assets/screens/home-ko.webp" width="720" height="1465"
+                                    loading="lazy" alt="미모샷 홈 화면: 지역 선택 칩과 시술명 검색창">
+                                <img class="en" src="assets/screens/home-en.webp" width="720" height="1465"
+                                    loading="lazy" alt="Mimoshot home screen with region chips and treatment search">
+                            </div>
+                        </div>
+                        <figcaption><b><span class="ko">홈</span><span class="en">Home</span></b><span class="ko">지역 선택과
+                                시술 검색</span><span class="en">Pick an area, search a treatment</span></figcaption>
+                    </figure>
+                    <figure class="reveal">
+                        <div class="phone">
+                            <div class="screen">
+                                <div class="statusbar"></div>
+                                <img class="ko" src="assets/screens/results-rejuran-ko.webp" width="585" height="1190"
+                                    loading="lazy" alt="리쥬란힐러 검색 결과: 평균 대비 비율 배지와 2cc당 단가">
+                                <img class="en" src="assets/screens/results-rejuran-en.webp" width="720"
+                                    height="1465" loading="lazy"
+                                    alt="Rejuran Healer results with per-2 mL prices and percentage versus average">
+                            </div>
+                        </div>
+                        <figcaption><b><span class="ko">검색 결과</span><span class="en">Results</span></b><span
+                                class="ko">단가와 평균 대비 ±%</span><span class="en">Unit price and ±% vs
+                                average</span></figcaption>
+                    </figure>
+                    <figure class="reveal">
+                        <div class="phone">
+                            <div class="screen">
+                                <div class="statusbar"></div>
+                                <img class="ko" src="assets/screens/results-thermage-ko.webp" width="585"
+                                    height="1190" loading="lazy" alt="써마지 검색 결과: 600샷 기준 평균 가격과 병원별 단가">
+                                <img class="en" src="assets/screens/results-thermage-en.webp" width="720"
+                                    height="1465" loading="lazy"
+                                    alt="Thermage results with average price per 600 pulses and per-clinic unit prices">
+                            </div>
+                        </div>
+                        <figcaption><b><span class="ko">다양한 단위</span><span class="en">Any unit</span></b><span
+                                class="ko">cc·샷·유닛·회 기준</span><span class="en">Per mL, shot, unit, or
+                                session</span></figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- Regions -->
+        <section class="section regions" id="regions" aria-labelledby="regions-title">
+            <div class="wrap">
+                <div class="section-head center">
+                    <p class="kicker"><span class="ko">서비스 지역</span><span class="en">Service areas</span></p>
+                    <h2 id="regions-title"><span class="ko">지금 이 지역에서<br>비교할 수 있어요</span><span class="en">Available
+                            in these<br>Seoul neighborhoods</span></h2>
+                </div>
+                <div class="region-box reveal">
+                    <div class="region-row">
+                        <h3><span class="ko">운영 중</span><span class="en">Live now</span></h3>
+                        <div class="chips">
+                            <span class="chip on"><span class="ko">강남역</span><span class="en">Gangnam Station</span></span>
+                            <span class="chip on"><span class="ko">건대+구의</span><span class="en">Kondae + Guui</span></span>
+                            <span class="chip on"><span class="ko">성수</span><span class="en">Seongsu</span></span>
+                            <span class="chip on"><span class="ko">연남+홍대</span><span class="en">Yeonnam + Hongdae</span></span>
+                            <span class="chip on"><span class="ko">압구정+신사</span><span class="en">Apgujeong + Sinsa</span></span>
+                            <span class="chip on"><span class="ko">잠실</span><span class="en">Jamsil</span></span>
+                        </div>
+                    </div>
+                    <div class="region-row">
+                        <h3><span class="ko">확대 예정</span><span class="en">Coming next</span></h3>
+                        <div class="chips">
+                            <span class="chip soon"><span class="ko">청담</span><span class="en">Cheongdam</span></span>
+                            <span class="chip soon"><span class="ko">서울 전역</span><span class="en">All of Seoul</span></span>
+                            <span class="chip soon"><span class="ko">전국</span><span class="en">Nationwide</span></span>
+                        </div>
+                    </div>
+                </div>
+                <p class="region-note"><span class="ko">앱 홈 화면에서 "전체"를 고르면 모든 지역을 한꺼번에 볼 수 있어요.</span><span
+                        class="en">Choose "All Regions" on the home screen to see every area at once.</span></p>
+            </div>
+        </section>
+
+        <!-- Team -->
+        <section class="section" id="team" aria-labelledby="team-title">
+            <div class="wrap">
+                <div class="team-card reveal">
+                    <div>
+                        <p class="kicker"><span class="ko">만든 팀</span><span class="en">The team</span></p>
+                        <h2 id="team-title">Paw Fighters</h2>
+                        <p class="slogan">Building small. Solving real.</p>
+                        <p>
+                            <span class="ko">미모샷은 (유)포파이터스가 만들고 운영합니다. 우리는 작은 팀이지만, 일상에서 직접 겪은 불편을 단순하고 정직한 앱으로 풀어냅니다. 미모샷은 "피부과 가격은 왜 이렇게 비교하기 어려울까"라는 질문에서 시작했어요.</span>
+                            <span class="en">Mimoshot is built and operated by Paw Fighters LC. We're a small team
+                                that turns everyday frustrations into simple, honest apps. Mimoshot started with one
+                                question: why is it so hard to compare clinic prices?</span>
+                        </p>
+                    </div>
+                    <dl class="facts">
+                        <div>
+                            <dt><span class="ko">운영사</span><span class="en">Company</span></dt>
+                            <dd><span class="ko">(유)포파이터스 · Paw Fighters LC.</span><span class="en">Paw Fighters
+                                    LC.</span></dd>
+                        </div>
+                        <div>
+                            <dt><span class="ko">문의</span><span class="en">Contact</span></dt>
+                            <dd><a href="mailto:byang@pawfighters.com">byang@pawfighters.com</a></dd>
+                        </div>
+                        <div>
+                            <dt><span class="ko">회사 소개</span><span class="en">Website</span></dt>
+                            <dd><a href="../index.html">pawfighters.com</a></dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta" aria-labelledby="cta-title">
+            <div class="wrap">
+                <div class="cta-box">
+                    <div>
+                        <svg class="logo-mark" viewBox="0 0 826 226" aria-hidden="true">
+                            <use href="#mimoshot-logo" />
+                        </svg>
+                        <h2 id="cta-title"><span class="ko">시술 예약 전, 단가부터 확인하세요.</span><span class="en">Check the
+                                unit price before you book.</span></h2>
+                        <p><span class="ko">한눈에 보는 피부과 가격비교, 미모샷</span><span class="en">Mimoshot: clinic prices
+                                at a glance</span></p>
+                    </div>
+                    <div class="stores">
+                        <a class="store light" href="https://apps.apple.com/kr/app/id6760410241" rel="noopener">
+                            <svg aria-hidden="true">
+                                <use href="#i-apple" />
+                            </svg>
+                            <span><small>Download on the</small><b>App Store</b></span>
+                        </a>
+                        <a class="store light"
+                            href="https://play.google.com/store/apps/details?id=com.pawfighters.mimoshot"
+                            rel="noopener">
+                            <svg aria-hidden="true">
+                                <use href="#i-play" />
+                            </svg>
+                            <span><small>GET IT ON</small><b>Google Play</b></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
 
-    <footer class="site-footer page">
-        <p>&copy; 2026 Paw Fighters LC. All Rights Reserved.</p>
-        <nav class="footer-links" aria-label="Service information">
-            <a href="privacy-policy.html">Privacy Policy</a>
-            <a href="mailto:byang@pawfighters.com">Contact us</a>
-            <a href="../index.html">Paw Fighters website</a>
-        </nav>
+    <footer class="site-footer">
+        <div class="wrap">
+            <p class="disclaimer">
+                <span class="ko">가격과 이벤트 조건은 변동될 수 있습니다. 시술 전 병원에 최종 가격과 조건을 확인하세요. 이 페이지의 병원명은 예시를 위한 가명입니다.</span>
+                <span class="en">Prices and promotional terms may change. Confirm the final price and conditions with
+                    the clinic before treatment. Clinic names on this page are placeholders.</span>
+            </p>
+            <div class="footer-row">
+                <p>&copy; 2026 Paw Fighters LC. All Rights Reserved.</p>
+                <nav class="footer-links" aria-label="Footer">
+                    <a href="privacy-policy.html"><span class="ko">개인정보처리방침</span><span class="en">Privacy
+                            Policy</span></a>
+                    <a href="mailto:byang@pawfighters.com"><span class="ko">문의하기</span><span class="en">Contact</span></a>
+                    <a href="../index.html"><span class="ko">Paw Fighters 홈</span><span class="en">Paw Fighters</span></a>
+                </nav>
+            </div>
+        </div>
     </footer>
+
+    <script>
+        (function () {
+            var root = document.documentElement;
+            var titles = {
+                ko: '미모샷 | 한눈에 보는 피부과 가격비교 · Paw Fighters',
+                en: 'Mimoshot | Compare K-clinic prices by the unit · Paw Fighters'
+            };
+
+            /* ── 언어 토글 ── */
+            function setLang(lang, save) {
+                root.setAttribute('data-lang', lang);
+                root.setAttribute('lang', lang);
+                document.title = titles[lang];
+                document.querySelectorAll('[data-set-lang]').forEach(function (b) {
+                    b.setAttribute('aria-pressed', String(b.getAttribute('data-set-lang') === lang));
+                });
+                if (save) {
+                    try { localStorage.setItem('mimoshot-lang', lang); } catch (e) { }
+                }
+            }
+            setLang(root.getAttribute('data-lang') || 'ko', false);
+            document.querySelectorAll('[data-set-lang]').forEach(function (b) {
+                b.addEventListener('click', function () { setLang(b.getAttribute('data-set-lang'), true); });
+            });
+
+            /* ── 헤더 구분선 ── */
+            var header = document.querySelector('.site-header');
+            function onScroll() { header.classList.toggle('scrolled', window.scrollY > 8); }
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+
+            /* ── 단가 비교 데모 ── */
+            var demo = document.getElementById('demo');
+            var list = demo.querySelector('.demo-list');
+            var AVG = 234387;
+            var SCALE = { total: 560000, unit: 260000 };
+            var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            function render(mode, animate) {
+                var cards = Array.prototype.slice.call(list.children);
+                var before = {};
+                cards.forEach(function (c) { before[c.dataset.id] = c.getBoundingClientRect().top; });
+
+                demo.setAttribute('data-mode', mode);
+                demo.querySelectorAll('.seg button').forEach(function (b) {
+                    b.setAttribute('aria-pressed', String(b.dataset.mode === mode));
+                });
+
+                cards.sort(function (x, y) { return Number(x.dataset[mode]) - Number(y.dataset[mode]); });
+                cards.forEach(function (c, i) {
+                    list.appendChild(c);
+                    c.querySelector('.rank').textContent = i + 1;
+                    var v = Number(c.dataset[mode]);
+                    c.querySelector('.bar i').style.width = Math.min(100, v / SCALE[mode] * 100) + '%';
+                    c.querySelector('.avg-mark').style.left = (AVG / SCALE.unit * 100) + '%';
+                });
+
+                if (!animate || reduce) return;
+                cards.forEach(function (c) {
+                    var dy = before[c.dataset.id] - c.getBoundingClientRect().top;
+                    if (!dy) return;
+                    c.style.transition = 'none';
+                    c.style.transform = 'translateY(' + dy + 'px)';
+                    requestAnimationFrame(function () {
+                        requestAnimationFrame(function () {
+                            c.style.transition = 'transform .6s cubic-bezier(0.2, 0.8, 0.2, 1)';
+                            c.style.transform = '';
+                        });
+                    });
+                });
+            }
+
+            var touched = false;
+            demo.querySelectorAll('.seg button').forEach(function (b) {
+                b.addEventListener('click', function () {
+                    touched = true;
+                    render(b.dataset.mode, true);
+                });
+            });
+            render('total', false);
+
+            /* ── 스크롤 등장 + 데모 자동 전환(한 번) ── */
+            var flipped = false;
+            if ('IntersectionObserver' in window) {
+                var io = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (e) {
+                        if (!e.isIntersecting) return;
+                        e.target.classList.add('in');
+                        if (e.target === demo && !flipped) {
+                            flipped = true;
+                            setTimeout(function () { if (!touched) render('unit', true); }, 1600);
+                        }
+                        io.unobserve(e.target);
+                    });
+                }, { threshold: 0.25 });
+                document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+            } else {
+                document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+            }
+        })();
+    </script>
 </body>
 
 </html>
