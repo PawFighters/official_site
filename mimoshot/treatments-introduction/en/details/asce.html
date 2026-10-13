@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Treatment Guide — ASCE+ | Mimoshot</title>
+<link crossorigin="" href="https://cdn.jsdelivr.net" rel="preconnect"/>
+<link as="font" crossorigin="" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2/PretendardVariable.woff2" rel="preload" type="font/woff2"/>
+<link href="../../colors_and_type.css" rel="stylesheet"/>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--neutral-100);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  .screen {
+    max-width: 420px;
+    margin: 0 auto;
+    background: var(--bg-app);
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 0 1px var(--neutral-200);
+  }
+
+  /* ── App bar ─────────────────────────────── */
+  .appbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--bg-app);
+    border-bottom: 1px solid var(--divider);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 52px;
+  }
+  .appbar .back {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: 0;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+  }
+  .appbar .bar-title {
+    font: 600 16px/1 var(--font-sans);
+    color: var(--fg-1);
+  }
+
+  /* ── Hero ────────────────────────────────── */
+  .hero {
+    padding: 24px 20px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .chip {
+    align-self: flex-start;
+    background: var(--accent-soft);
+    color: var(--accent-press);
+    font: 700 11px/1 var(--font-sans);
+    padding: 6px 9px;
+    border-radius: 6px;
+    letter-spacing: 0.01em;
+  }
+  .hero h1 {
+    margin: 14px 0 0;
+    font: 700 28px/1.25 var(--font-sans);
+    color: var(--fg-1);
+    text-wrap: pretty;
+  }
+  .hero .en {
+    margin-top: 6px;
+    font: 500 13px/1.4 var(--font-sans);
+    color: var(--fg-3);
+  }
+  .hero .lead {
+    margin: 16px 0 0;
+    font: 500 17px/1.6 var(--font-sans);
+    color: var(--fg-2);
+    text-wrap: pretty;
+  }
+  .hero .lead strong { color: var(--accent); font-weight: 700; }
+  .hero .note {
+    margin: 16px 0 0;
+    background: var(--neutral-50);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font: 400 13px/1.6 var(--font-sans);
+    color: var(--fg-3);
+    text-wrap: pretty;
+  }
+  .hero .note strong { color: var(--fg-2); font-weight: 600; }
+
+  /* ── Section scaffolding ─────────────────── */
+  .band { height: 8px; background: var(--neutral-100); flex-shrink: 0; }
+  section.block { padding: 28px 20px; }
+  section.block > h2 {
+    margin: 0 0 16px;
+    font: var(--t-h3);
+    color: var(--fg-1);
+  }
+  section.block p {
+    margin: 0;
+    font: var(--t-body);
+    color: var(--fg-2);
+    text-wrap: pretty;
+  }
+  section.block p strong { color: var(--fg-1); font-weight: 600; }
+  section.block p + p { margin-top: 12px; }
+
+  /* ── ② Checklist ─────────────────────────── */
+  .checklist { display: flex; flex-direction: column; gap: 12px; }
+  .checklist li { display: flex; align-items: center; gap: 12px; }
+  .checklist .tick {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .checklist .txt { font: 500 15px/1.5 var(--font-sans); color: var(--fg-2); }
+  ul, ol { margin: 0; padding: 0; list-style: none; }
+
+  /* ── ④ Effect tiles ──────────────────────── */
+  .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tiles li {
+    background: var(--violet-50);
+    border-radius: 12px;
+    padding: 16px 14px;
+    font: 600 14px/1.45 var(--font-sans);
+    color: var(--violet-800);
+    text-wrap: pretty;
+  }
+  .tiles li:nth-child(odd):last-child { grid-column: 1 / -1; }
+  .tiles .tail { color: var(--violet-700); font-weight: 400; }
+
+  /* ── ⑤ Key-value card ────────────────────── */
+  .kv {
+    background: var(--neutral-50);
+    border-radius: 16px;
+    padding: 4px 18px;
+  }
+  .kv .row {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+  }
+  .kv .row + .row { border-top: 1px solid var(--divider); }
+  .kv .k {
+    flex: 0 0 84px;
+    font: 600 13px/1.55 var(--font-sans);
+    color: var(--fg-3);
+    padding-top: 1px;
+  }
+  .kv .v {
+    flex: 1;
+    font: 500 14px/1.55 var(--font-sans);
+    color: var(--fg-1);
+    font-variant-numeric: tabular-nums;
+    text-wrap: pretty;
+  }
+
+  /* ── ⑥ Price-factor panel ────────────────── */
+  .price-panel {
+    background: var(--violet-50);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .price-panel .intro {
+    font: var(--t-body);
+    color: var(--fg-2);
+    margin: 0 0 4px;
+    text-wrap: pretty;
+  }
+  .factor {
+    background: var(--bg-surface);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .factor .name { font: 700 14px/1.4 var(--font-sans); color: var(--fg-1); }
+  .factor .desc { font: 400 13.5px/1.5 var(--font-sans); color: var(--fg-2); }
+  .compare-tip {
+    margin-top: 4px;
+    background: var(--accent);
+    color: var(--on-accent);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font: 600 14px/1.5 var(--font-sans);
+    text-wrap: pretty;
+  }
+
+  /* ── ⑦ Steps ─────────────────────────────── */
+  .steps { display: flex; flex-direction: column; }
+  .steps li { display: flex; gap: 14px; position: relative; padding-bottom: 20px; }
+  .steps li:last-child { padding-bottom: 0; }
+  .steps .num {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--on-accent);
+    font: 700 13px/1 var(--font-sans);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .steps li:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: 12px;
+    top: 26px;
+    bottom: 0;
+    width: 2px;
+    background: var(--violet-100);
+  }
+  .steps .txt {
+    font: 500 15px/1.5 var(--font-sans);
+    color: var(--fg-2);
+    padding-top: 3px;
+    text-wrap: pretty;
+  }
+
+  /* ── ⑧ Cautions ──────────────────────────── */
+  .cautions {
+    background: var(--neutral-50);
+    border-radius: 16px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .cautions li {
+    display: flex;
+    gap: 10px;
+    font: 400 13.5px/1.6 var(--font-sans);
+    color: var(--fg-3);
+    text-wrap: pretty;
+  }
+  .cautions li::before {
+    content: "";
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--neutral-400);
+    flex-shrink: 0;
+    margin-top: 8px;
+  }
+
+  /* ── ⑨ FAQ ───────────────────────────────── */
+  .faq details + details { border-top: 1px solid var(--divider); }
+  .faq summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 14px 0;
+    cursor: pointer;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq .q-mark {
+    font: 800 16px/1 var(--font-sans);
+    color: var(--violet-700);
+    flex-shrink: 0;
+  }
+  .faq .q-text {
+    flex: 1;
+    font: 600 15px/1.45 var(--font-sans);
+    color: var(--fg-1);
+    text-wrap: pretty;
+  }
+  .faq .chev {
+    flex-shrink: 0;
+    display: flex;
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+  .faq details[open] .chev { transform: rotate(180deg); }
+  .faq .answer {
+    border-top: 1px solid var(--divider);
+    padding: 14px 0 18px 26px;
+    font: 400 14.5px/1.6 var(--font-sans);
+    color: var(--fg-2);
+    text-wrap: pretty;
+  }
+
+  /* ── ⑩ Disclaimer ────────────────────────── */
+  .disclaimer {
+    padding: 4px 20px 28px;
+    font: 400 12px/1.6 var(--font-sans);
+    color: var(--fg-4);
+    text-wrap: pretty;
+  }
+
+  /* ── CTA dock ────────────────────────────── */
+  .cta-dock {
+    position: sticky;
+    bottom: 0;
+    margin-top: auto;
+    background: var(--bg-surface);
+    box-shadow: var(--shadow-tab);
+    border-top: 1px solid var(--divider);
+    padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
+  }
+  .cta {
+    width: 100%;
+    height: 52px;
+    border: 0;
+    border-radius: 14px;
+    background: var(--accent);
+    color: var(--on-accent);
+    font: 700 16px/1 var(--font-sans);
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+  }
+  .cta:active { background: var(--accent-press); transform: scale(0.98); }
+
+</style>
+</head>
+<body>
+<div class="screen" data-screen-label="Treatment Guide - ASCE+">
+<header class="appbar">
+<button aria-label="Back" class="back" onclick="history.back()" type="button"><svg fill="none" height="24" stroke="#5418B6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" viewbox="0 0 24 24" width="24"><path d="M15 18l-6-6 6-6"></path></svg></button>
+<div class="bar-title">Treatment Guide</div>
+</header>
+<section class="hero">
+<span class="chip">Skin booster</span>
+<h1>ASCE+</h1><div class="en" lang="ko">ASCE+</div>
+<p class="lead">A leave-on skin booster made with freeze-dried exosomes from ExoCoBio.</p>
+</section>
+<div class="band"></div>
+<section class="block">
+<h2>Is it for you?</h2>
+<ul class="checklist">
+<li>
+<span class="tick"><svg fill="none" height="14" stroke="#7C3AED" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewbox="0 0 24 24" width="14"><path d="M20 6 9 17l-5-5"></path></svg></span>
+<span class="txt">You want soothing, skin-repairing care</span>
+</li>
+<li>
+<span class="tick"><svg fill="none" height="14" stroke="#7C3AED" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewbox="0 0 24 24" width="14"><path d="M20 6 9 17l-5-5"></path></svg></span>
+<span class="txt">You want a finishing treatment after another procedure</span>
+</li>
+<li>
+<span class="tick"><svg fill="none" height="14" stroke="#7C3AED" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewbox="0 0 24 24" width="14"><path d="M20 6 9 17l-5-5"></path></svg></span>
+<span class="txt">You want to improve your skin's texture and condition</span>
+</li>
+</ul>
+</section>
+<div class="band"></div>
+<section class="block">
+<h2>What it is</h2>
+<p>ASCE+ (SRLV for skin) is a topical cosmetic booster from ExoCoBio, a company that specializes in exosomes. Exosomes are isolated and purified from stem cell culture using a patented process, stabilized as a freeze-dried powder, and mixed with an activating solution right before being applied to the skin. It's a professional product used in clinics and is meant to be applied topically.</p>
+</section>
+<div class="band"></div>
+<section class="block">
+<h2>What it may help with</h2>
+<ul class="tiles">
+<li>Soothing the skin</li>
+<li>Supporting skin repair</li>
+<li>Better texture and firmness</li>
+</ul>
+</section>
+<div class="band"></div>
+<section class="block">
+<h2>At a glance</h2>
+<div class="kv">
+<div class="row"><div class="k">Treatment time</div><div class="v">Depends on how it's applied and absorbed</div></div>
+<div class="row"><div class="k">Numbing</div><div class="v">Not needed (topical)</div></div>
+<div class="row"><div class="k">Downtime</div><div class="v">Almost none (no injections)</div></div>
+<div class="row"><div class="k">How often</div><div class="v">Regular care recommended; ask your doctor or specialist</div></div>
+<div class="row"><div class="k">How long it lasts</div><div class="v">As a topical cosmetic, it works best with ongoing care</div></div>
+</div>
+</section>
+<div class="band"></div>
+<section class="block">
+<h2>Why prices vary</h2>
+<div class="price-panel">
+<p class="intro">ASCE+ pricing depends on whether it's a standalone treatment or a finishing step after another procedure, plus the number of sessions and what's included.</p>
+<div class="compare-tip">When comparing, make sure the number of sessions and what's included are the same.</div>
+</div>
+</section>
+<div class="band"></div>
+<section class="block">
+<h2>Side effects &amp; precautions</h2>
+<ul class="cautions">
+<li>Your skin may feel briefly red or tingly after application.</li>
+<li>Tell your clinic first if you've had allergies to cosmetic ingredients.</li>
+<li>It's a topical cosmetic, so injecting it falls outside its approval by Korea's MFDS.</li>
+<li>Use with care on areas with wounds or inflammation.</li>
+</ul>
+</section>
+<p class="disclaimer">This is general information. Results and reactions vary from person to person. Always decide how to use it, and whether it suits you, in consultation with a doctor or skincare professional.</p>
+<div class="cta-dock">
+<button class="cta" data-search-name="ASCE+" type="button">Compare ASCE+ prices</button>
+</div>
+</div>
+<script>
+(() => {
+  const cta = document.querySelector(".cta");
+  if (!cta) return;
+  /* data-search-name holds the treatment name as it appears in the app's
+     English data (procedures_en), so the English search can find it. */
+  cta.addEventListener("click", () => {
+    const treatmentName = (cta.dataset.searchName || "").trim();
+    if (!treatmentName || !window.MimoshotApp || typeof window.MimoshotApp.postMessage !== "function") return;
+    window.MimoshotApp.postMessage(JSON.stringify({
+      type: "openPriceSearch",
+      treatmentName
+    }));
+  });
+})();
+</script>
+</body>
+</html>

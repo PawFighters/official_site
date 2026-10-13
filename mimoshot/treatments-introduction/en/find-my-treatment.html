@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find Your Treatment | Mimoshot</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2/PretendardVariable.woff2" crossorigin>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--neutral-100);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  .screen {
+    max-width: 420px;
+    margin: 0 auto;
+    background: var(--bg-app);
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 0 1px var(--neutral-200);
+  }
+  ul, ol { margin: 0; padding: 0; list-style: none; }
+  button { font-family: var(--font-sans); }
+
+  /* App bar */
+  .appbar {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--bg-app);
+    border-bottom: 1px solid var(--divider);
+    display: grid; grid-template-columns: 40px 1fr 40px; align-items: center;
+    height: 52px;
+  }
+  .appbar .back {
+    border: 0; background: transparent; cursor: pointer;
+    height: 52px; display: flex; align-items: center; justify-content: center;
+  }
+  .appbar .bar-title { text-align: center; font: 600 16px/1 var(--font-sans); color: var(--fg-1); }
+
+  /* Progress */
+  .progress-wrap { padding: 16px 20px 0; }
+  .progress-track { height: 6px; background: var(--neutral-100); border-radius: var(--r-pill); overflow: hidden; }
+  .progress-fill { height: 100%; width: 0; background: var(--accent); border-radius: var(--r-pill); transition: width var(--dur-base) var(--ease-out); }
+  .progress-label { margin: 8px 2px 0; font: 700 11px/1 var(--font-sans); color: var(--fg-4); letter-spacing: .02em; font-variant-numeric: tabular-nums; }
+
+  /* Question */
+  .stage { padding: 20px; flex: 1; }
+  .q-kicker { font: 700 11px/1 var(--font-sans); color: var(--accent); letter-spacing: .04em; }
+  .q-title { margin: 10px 0 4px; font: 700 21px/1.4 var(--font-sans); color: var(--fg-1); text-wrap: pretty; }
+  .q-sub { margin: 0 0 18px; font: 400 13.5px/1.6 var(--font-sans); color: var(--fg-3); text-wrap: pretty; }
+
+  .options { display: flex; flex-direction: column; gap: 9px; }
+  .opt {
+    border: 1px solid var(--border-subtle); cursor: pointer; text-align: left;
+    background: var(--bg-surface); color: var(--fg-1);
+    padding: 16px; border-radius: var(--r-lg, 14px);
+    box-shadow: var(--shadow-xs);
+    transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  .opt:active { transform: scale(.99); background: var(--accent-soft); }
+  .opt.sel { border-color: var(--accent); background: var(--accent-soft); }
+  .opt .lab { font: 600 15.5px/1.4 var(--font-sans); }
+  .opt .hint { font: 400 12.5px/1.45 var(--font-sans); color: var(--fg-3); }
+
+  /* chips grid (group/concern) */
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+  .grid .opt { align-items: flex-start; min-height: 64px; justify-content: center; }
+  .grid .opt .lab { font-size: 14.5px; }
+
+  .nav { margin-top: 18px; display: flex; }
+  .ghost-btn {
+    border: 0; background: transparent; cursor: pointer; color: var(--fg-3);
+    font: 700 13px/1 var(--font-sans); padding: 12px 4px; min-height: 40px;
+  }
+
+  /* Result */
+  .result-head { padding: 22px 20px 6px; }
+  .result-head h2 { margin: 0; font: 700 20px/1.4 var(--font-sans); color: var(--fg-1); text-wrap: pretty; }
+  .pick-summary { margin: 12px 0 2px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .pick-summary .pchip {
+    background: var(--violet-50); color: var(--violet-700);
+    font: 700 11.5px/1 var(--font-sans); padding: 7px 10px; border-radius: var(--r-pill);
+  }
+  .result-note { margin: 14px 0 0; font: 400 12px/1.6 var(--font-sans); color: var(--fg-4); text-wrap: pretty; }
+
+  .res-list { display: flex; flex-direction: column; gap: 11px; padding: 14px 20px 4px; }
+  .res-card {
+    display: block; text-decoration: none; position: relative;
+    background: var(--bg-surface); border: 1px solid var(--border-subtle);
+    border-radius: 16px; padding: 16px; box-shadow: var(--shadow-xs);
+    transition: background var(--dur-fast) var(--ease-out);
+  }
+  .res-card:active { background: var(--neutral-100); }
+  .res-card.top { border-color: var(--accent); }
+  .res-rank {
+    position: absolute; top: -9px; left: 14px;
+    background: var(--accent); color: var(--on-accent);
+    font: 800 10px/1 var(--font-sans); letter-spacing: .03em;
+    padding: 5px 9px; border-radius: var(--r-pill);
+  }
+  .res-top { display: flex; align-items: center; gap: 8px; margin-bottom: 2px; }
+  .res-name { font: 700 17px/1.3 var(--font-sans); color: var(--fg-1); }
+  .res-cat {
+    background: var(--accent-soft); color: var(--accent-press);
+    font: 700 10px/1 var(--font-sans); padding: 4px 6px; border-radius: 5px;
+  }
+  .res-desc { margin: 6px 0 0; font: 400 13px/1.55 var(--font-sans); color: var(--fg-3); text-wrap: pretty; }
+  .res-reasons { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .res-reasons .r {
+    background: var(--neutral-100); color: var(--fg-2);
+    font: 700 11px/1 var(--font-sans); padding: 6px 8px; border-radius: var(--r-pill);
+  }
+  .res-reasons .r.match { background: var(--accent); color: var(--on-accent); }
+  .res-go { margin-top: 12px; display: flex; align-items: center; gap: 4px; color: var(--accent-press); font: 700 12.5px/1 var(--font-sans); }
+
+  .restart-wrap { padding: 16px 20px 8px; }
+  .restart {
+    width: 100%; border: 1px solid var(--border-subtle); cursor: pointer;
+    background: var(--bg-surface); color: var(--fg-1);
+    font: 700 14px/1 var(--font-sans); padding: 15px; border-radius: 12px; min-height: 50px;
+    box-shadow: var(--shadow-xs);
+  }
+  .restart:active { background: var(--neutral-100); }
+
+  .disclaimer { padding: 8px 20px 32px; font: 400 12px/1.6 var(--font-sans); color: var(--fg-4); text-wrap: pretty; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="screen" data-screen-label="Treatment Guide - Find Your Treatment">
+
+  <header class="appbar">
+    <button class="back" id="backBtn" aria-label="Back">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2B2733" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg>
+    </button>
+    <div class="bar-title">Find Your Treatment</div>
+    <span></span>
+  </header>
+
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel"></div>
+  </div>
+
+  <main class="stage" id="stage"></main>
+
+</div>
+
+<script src="treatments.js"></script>
+<script>
+/* ============================================================
+   나에게 맞는 시술 찾기 — 적응형 다축 매칭
+   1) 고민 범주 → 2) 세부 고민으로 후보군 확정
+   3) 후보군이 '실제로 갈리는' 항목만 골라 질문(적응형)
+   4) 다축 가중 채점 → 상위 추천 + 매칭 근거 표시
+   ============================================================ */
+const CHEV = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B21D9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>';
+const stage = document.getElementById("stage");
+const fill = document.getElementById("progressFill");
+const plabel = document.getElementById("progressLabel");
+const backBtn = document.getElementById("backBtn");
+const concernLabel = (id) => (CONCERNS.find((c) => c.id === id) || {}).label || id;
+
+/* 후보군 = 선택한 세부 고민을 '대표 고민'으로 가진 시술 */
+function poolFor(concern) { return TREATMENTS.filter((t) => t.c.includes(concern)); }
+
+/* 적응형 질문 정의: 후보군에서 값이 갈릴 때만 노출 */
+const REFINE = [
+  {
+    key: "downtime",
+    applicable: (p) => new Set(p.map((t) => t.dt)).size > 1,
+    kicker: "Recovery", title: "How much downtime can you handle?",
+    sub: "That's the time when swelling, bruising, or marks get in the way of daily life.",
+    options: [
+      { v: "none", lab: "Almost none", hint: "I want to get right back to my day" },
+      { v: "some", lab: "A few days is fine", hint: "I can live with 2–3 days" },
+      { v: "any", lab: "Doesn't matter", hint: "Downtime isn't a factor for me" },
+    ],
+  },
+  {
+    key: "pain",
+    applicable: (p) => Math.max(...p.map((t) => t.pain)) - Math.min(...p.map((t) => t.pain)) >= 2,
+    kicker: "Pain", title: "How do you feel about needles and injection pain?",
+    sub: "Topical and energy-based treatments hurt less; injections and microneedles can hurt more.",
+    options: [
+      { v: "low", lab: "As little as possible", hint: "Needles make me nervous" },
+      { v: "ok", lab: "I'm okay with it", hint: "Worth it if the results are good" },
+      { v: "any", lab: "Doesn't matter", hint: "Pain isn't a factor for me" },
+    ],
+  },
+  {
+    key: "onset",
+    applicable: (p) => new Set(p.map((t) => t.onset)).size > 1,
+    kicker: "Results", title: "What kind of results do you prefer?",
+    sub: "Some changes show right away, like filler; others build gradually and naturally, like boosters.",
+    options: [
+      { v: "immediate", lab: "Right away", hint: "I want to see a change immediately" },
+      { v: "gradual", lab: "Gradual and natural", hint: "I'd like it to improve without being obvious" },
+      { v: "any", lab: "Doesn't matter", hint: "Speed isn't a factor for me" },
+    ],
+  },
+  {
+    key: "sessions",
+    applicable: (p) => new Set(p.map((t) => !!t.multi)).size > 1,
+    kicker: "Sessions", title: "How many sessions are you up for?",
+    sub: "Some treatments are one-and-done; others are spread over several sessions.",
+    options: [
+      { v: "one", lab: "One and done", hint: "I can't visit often" },
+      { v: "multi", lab: "Several sessions are fine", hint: "I can keep up regular visits" },
+      { v: "any", lab: "Doesn't matter", hint: "Sessions aren't a factor for me" },
+    ],
+  },
+];
+
+/* ---- 상태 ---- */
+let answers = {};
+let flow = [];   // 화면 시퀀스: 'group','concern', (refine keys...), 'result'
+let pos = 0;
+
+function rebuildFlow() {
+  flow = ["group", "concern"];
+  if (answers.concern) {
+    const pool = poolFor(answers.concern);
+    if (pool.length > 2) {
+      REFINE.forEach((r) => { if (r.applicable(pool)) flow.push(r.key); });
+    }
+    flow.push("result");
+  }
+}
+
+function setProgress() {
+  // 질문 수 = result 화면을 뺀 단계 수. 세부 고민을 고르기 전에는 뒤에 붙을
+  // 질문 수를 아직 모르므로(known=false) 분모 없이 현재 번호만 보여줘요.
+  const questions = flow.filter((s) => s !== "result").length;
+  const known = flow.includes("result");
+  const isResult = flow[pos] === "result";
+  const cur = Math.min(pos + 1, questions);
+  const denom = known ? questions : questions + 1;
+  fill.style.width = (isResult ? 100 : Math.round((pos / Math.max(denom, 1)) * 100)) + "%";
+  plabel.textContent = isResult ? "Your matches" : (known ? `Question ${cur} of ${questions}` : `Question ${cur}`);
+  document.getElementById("progressWrap").style.display = "block";
+}
+
+function go(delta) { pos = Math.max(0, Math.min(flow.length - 1, pos + delta)); render(); }
+
+/* ---- 채점 ---- */
+function score(t) {
+  let s = 0;
+  if (answers.downtime === "none") s += t.dt === "none" ? 25 : -30;
+  else if (answers.downtime === "some") s += t.dt === "some" ? 15 : 10;
+
+  if (answers.pain === "low") s += [25, 12, -12, -25][t.pain] ?? 0;
+  else if (answers.pain === "ok") s += t.pain >= 2 ? 10 : 3;
+
+  if (answers.onset === "immediate") s += t.onset === "immediate" ? 25 : -12;
+  else if (answers.onset === "gradual") s += t.onset === "gradual" ? 15 : -12;
+
+  if (answers.sessions === "one") s += t.multi ? -12 : 18;
+  else if (answers.sessions === "multi") s += t.multi ? 15 : -6;
+  return s;
+}
+function reasonsFor(t) {
+  const r = [];
+  if (answers.downtime === "none" && t.dt === "none") r.push("Quick recovery");
+  if (answers.pain === "low" && t.pain <= 1) r.push("Low pain");
+  if (answers.onset === "immediate" && t.onset === "immediate") r.push("Instant results");
+  if (answers.onset === "gradual" && t.onset === "gradual") r.push("Natural, gradual");
+  if (answers.sessions === "one" && !t.multi) r.push("Single session");
+  if (answers.sessions === "multi" && t.multi) r.push("Ongoing care");
+  return r;
+}
+
+/* ---- 렌더 ---- */
+function render() {
+  setProgress();
+  backBtn.style.visibility = pos === 0 ? "hidden" : "visible";
+  const screen = flow[pos];
+  if (screen === "group") return renderGroup();
+  if (screen === "concern") return renderConcern();
+  if (screen === "result") return renderResult();
+  return renderRefine(REFINE.find((r) => r.key === screen));
+}
+
+function optionButton({ lab, hint, selected, onClick, grid }) {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.className = "opt" + (selected ? " sel" : "");
+  b.innerHTML = `<span class="lab"></span>${hint ? '<span class="hint"></span>' : ""}`;
+  b.querySelector(".lab").textContent = lab;
+  if (hint) b.querySelector(".hint").textContent = hint;
+  b.addEventListener("click", onClick);
+  return b;
+}
+
+function questionHead(kicker, title, sub) {
+  return `<div class="q-kicker">${kicker}</div><h1 class="q-title"></h1>${sub ? '<p class="q-sub"></p>' : ""}`;
+}
+
+function renderGroup() {
+  stage.innerHTML = questionHead("STEP 1 · Concern area", "x", "x") +
+    '<div class="grid" id="opts"></div>';
+  stage.querySelector(".q-title").textContent = "What bothers you most?";
+  stage.querySelector(".q-sub").textContent = "Pick a broad area first, and we'll narrow it down next.";
+  const opts = stage.querySelector("#opts");
+  CONCERN_GROUPS.forEach((g) => {
+    opts.appendChild(optionButton({
+      lab: g.label, selected: answers.group === g.label, grid: true,
+      onClick: () => {
+        if (answers.group !== g.label) { answers.group = g.label; answers.concern = null; }
+        rebuildFlow(); go(1);
+      },
+    }));
+  });
+}
+
+function renderConcern() {
+  const group = CONCERN_GROUPS.find((g) => g.label === answers.group);
+  const list = (group ? group.concerns : [])
+    .filter((id) => TREATMENTS.some((t) => t.c.includes(id)));
+  stage.innerHTML = questionHead("STEP 2 · Your concern", "x", "x") +
+    '<div class="grid" id="opts"></div>' +
+    '<div class="nav"><button class="ghost-btn" id="prev">← Back</button></div>';
+  stage.querySelector(".q-title").textContent = `Pick one from ${answers.group}`;
+  stage.querySelector(".q-sub").textContent = "Choose the closest match and we'll shortlist treatments.";
+  const opts = stage.querySelector("#opts");
+  list.forEach((id) => {
+    const n = poolFor(id).length;
+    opts.appendChild(optionButton({
+      lab: concernLabel(id), hint: `${n} ${n === 1 ? "treatment" : "treatments"}`, selected: answers.concern === id, grid: true,
+      onClick: () => { answers.concern = id; rebuildFlow(); go(1); },
+    }));
+  });
+  stage.querySelector("#prev").addEventListener("click", () => go(-1));
+}
+
+function renderRefine(def) {
+  stage.innerHTML = questionHead(`STEP · ${def.kicker}`, "x", "x") +
+    '<div class="options" id="opts"></div>' +
+    '<div class="nav"><button class="ghost-btn" id="prev">← Back</button></div>';
+  stage.querySelector(".q-title").textContent = def.title;
+  stage.querySelector(".q-sub").textContent = def.sub;
+  const opts = stage.querySelector("#opts");
+  def.options.forEach((o) => {
+    opts.appendChild(optionButton({
+      lab: o.lab, hint: o.hint, selected: answers[def.key] === o.v,
+      onClick: () => { answers[def.key] = o.v; go(1); },
+    }));
+  });
+  stage.querySelector("#prev").addEventListener("click", () => go(-1));
+}
+
+function renderResult() {
+  document.getElementById("progressWrap").style.display = "block";
+  const pool = poolFor(answers.concern).slice();
+  const ranked = pool
+    .map((t, i) => ({ t, s: score(t), i }))
+    .sort((a, b) => (b.s - a.s) || (a.t.pain - b.t.pain) || (a.i - b.i))
+    .slice(0, Math.min(5, pool.length));
+
+  // 선택 요약 칩
+  const picks = [concernLabel(answers.concern)];
+  const sumMap = {
+    downtime: { none: "Quick recovery", some: "A few days OK" },
+    pain: { low: "Low pain", ok: "Pain OK" },
+    onset: { immediate: "Instant results", gradual: "Natural, gradual" },
+    sessions: { one: "Single session", multi: "Ongoing care" },
+  };
+  Object.keys(sumMap).forEach((k) => { if (answers[k] && sumMap[k][answers[k]]) picks.push(sumMap[k][answers[k]]); });
+
+  stage.innerHTML = "";
+  const head = document.createElement("div");
+  head.className = "result-head";
+  head.innerHTML = '<h2></h2><div class="pick-summary" id="picks"></div>' +
+    '<p class="result-note">These are ranked by how closely they match what you picked. Results and suitability vary by person, so check each treatment page and talk to a medical professional for details.</p>';
+  head.querySelector("h2").textContent = `Good matches for ${concernLabel(answers.concern).toLowerCase()}`;
+  const picksEl = head.querySelector("#picks");
+  picks.forEach((p) => { const s = document.createElement("span"); s.className = "pchip"; s.textContent = p; picksEl.appendChild(s); });
+  stage.appendChild(head);
+
+  const listEl = document.createElement("div");
+  listEl.className = "res-list";
+  ranked.forEach((r, idx) => {
+    const t = r.t;
+    const a = document.createElement("a");
+    a.className = "res-card" + (idx === 0 ? " top" : "");
+    a.href = t.href;
+    const reasons = reasonsFor(t);
+    a.innerHTML =
+      (idx === 0 ? '<span class="res-rank">Best match</span>' : "") +
+      '<div class="res-top"><span class="res-name"></span><span class="res-cat"></span></div>' +
+      '<p class="res-desc"></p>' +
+      '<div class="res-reasons"></div>' +
+      `<div class="res-go">Learn more ${CHEV}</div>`;
+    a.querySelector(".res-name").textContent = t.n;
+    a.querySelector(".res-cat").textContent = t.cat;
+    a.querySelector(".res-desc").textContent = t.d;
+    const rs = a.querySelector(".res-reasons");
+    reasons.forEach((txt) => { const c = document.createElement("span"); c.className = "r match"; c.textContent = txt; rs.appendChild(c); });
+    // 보조 정보 칩(중립): 다운타임/방식
+    const info = [];
+    info.push(t.dt === "none" ? "Almost no downtime" : "A few days of downtime");
+    if (t.multi) info.push("Several sessions"); else info.push("Single session");
+    info.forEach((txt) => { const c = document.createElement("span"); c.className = "r"; c.textContent = txt; rs.appendChild(c); });
+    listEl.appendChild(a);
+  });
+  stage.appendChild(listEl);
+
+  const rw = document.createElement("div");
+  rw.className = "restart-wrap";
+  rw.innerHTML = '<button class="restart" id="restart">Start over</button>';
+  rw.querySelector("#restart").addEventListener("click", () => { answers = {}; rebuildFlow(); pos = 0; render(); });
+  stage.appendChild(rw);
+
+  const dc = document.createElement("p");
+  dc.className = "disclaimer";
+  dc.textContent = "These suggestions are general guidance for reference only, not a diagnosis or medical advice. Always decide on treatment in consultation with a medical professional.";
+  stage.appendChild(dc);
+}
+
+backBtn.addEventListener("click", () => { if (pos > 0) go(-1); else history.back(); });
+
+/* init */
+rebuildFlow();
+render();
+</script>
+</body>
+</html>

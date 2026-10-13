@@ -235,11 +235,15 @@ function rebuildFlow() {
 }
 
 function setProgress() {
-  const total = flow.length;           // result 포함
-  const cur = Math.min(pos + 1, total);
+  // 질문 수 = result 화면을 뺀 단계 수. 세부 고민을 고르기 전에는 뒤에 붙을
+  // 질문 수를 아직 모르므로(known=false) 분모 없이 현재 번호만 보여줘요.
+  const questions = flow.filter((s) => s !== "result").length;
+  const known = flow.includes("result");
   const isResult = flow[pos] === "result";
-  fill.style.width = (isResult ? 100 : Math.round((pos / Math.max(total - 1, 1)) * 100)) + "%";
-  plabel.textContent = isResult ? "추천 결과" : `질문 ${cur} / ${total - 1}`;
+  const cur = Math.min(pos + 1, questions);
+  const denom = known ? questions : questions + 1;
+  fill.style.width = (isResult ? 100 : Math.round((pos / Math.max(denom, 1)) * 100)) + "%";
+  plabel.textContent = isResult ? "추천 결과" : (known ? `질문 ${cur} / ${questions}` : `질문 ${cur}`);
   document.getElementById("progressWrap").style.display = "block";
 }
 
