@@ -302,3 +302,132 @@
 		flex-basis: 100%;
 	}
 }
+
+/* ── About: lead, values, current focus ── */
+#main p.pf-lead {
+	font-size: 1.2rem;
+	line-height: 1.6;
+	font-weight: 600;
+}
+
+.pf-values {
+	margin: 0 0 2.5rem 0;
+	padding: 0;
+	list-style: none;
+}
+
+.pf-values li {
+	display: flex;
+	gap: 1.1rem;
+	padding: 1rem 0;
+	border-top: solid 1px rgba(255, 255, 255, 0.15);
+}
+
+.pf-values li:last-child {
+	border-bottom: solid 1px rgba(255, 255, 255, 0.15);
+}
+
+.pf-v-num {
+	flex: none;
+	width: 2rem;
+	padding-top: 0.15rem;
+	color: var(--mimo-soft);
+	font-size: 0.8rem;
+	font-weight: 600;
+	letter-spacing: 0.1rem;
+}
+
+.pf-values strong {
+	display: block;
+	margin-bottom: 0.2rem;
+	font-size: 1rem;
+}
+
+.pf-values span {
+	display: block;
+	font-size: 0.9rem;
+	line-height: 1.6;
+	opacity: 0.8;
+}
+
+#main .pf-focus {
+	display: flex;
+	gap: 1.25rem;
+	align-items: flex-start;
+	margin: 0 0 2.5rem 0;
+	padding: 1.5rem;
+	border: solid 1px rgba(201, 176, 255, 0.35);
+	border-radius: 14px;
+	background: linear-gradient(150deg, rgba(124, 58, 237, 0.28), rgba(84, 24, 182, 0.12));
+	color: #fff;
+	transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+#main .pf-focus:hover {
+	border-color: rgba(201, 176, 255, 0.7);
+	transform: translateY(-2px);
+}
+
+.pf-focus-logo {
+	flex: none;
+	width: 3.25rem;
+	height: 3.25rem;
+	padding: 0.9rem 0.55rem;
+	border-radius: 12px;
+	background: var(--mimo);
+	color: #fff;
+}
+
+.pf-focus strong {
+	display: block;
+	font-size: 1.05rem;
+	letter-spacing: 0.05rem;
+}
+
+.pf-focus strong span {
+	margin-left: 0.3rem;
+	font-weight: 300;
+	opacity: 0.75;
+}
+
+.pf-focus-desc {
+	display: block;
+	margin: 0.4rem 0 0.9rem 0;
+	font-size: 0.9rem;
+	line-height: 1.6;
+	opacity: 0.88;
+}
+
+.pf-focus-facts {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.35rem;
+	margin: 0 0 1rem 0;
+	padding: 0;
+	list-style: none;
+}
+
+.pf-focus-facts li {
+	margin: 0;
+	padding: 0.15rem 0.55rem;
+	border: solid 1px rgba(255, 255, 255, 0.3);
+	border-radius: 6px;
+	font-size: 0.72rem;
+	line-height: 1.6;
+}
+
+.pf-focus-more {
+	font-size: 0.75rem;
+	font-weight: 600;
+	letter-spacing: 0.15rem;
+	text-transform: uppercase;
+	border-bottom: solid 1px rgba(255, 255, 255, 0.6);
+	padding-bottom: 0.1rem;
+}
+
+@media screen and (max-width: 480px) {
+	#main .pf-focus {
+		flex-direction: column;
+		padding: 1.25rem;
+	}
+}
